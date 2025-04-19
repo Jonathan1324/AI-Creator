@@ -4,14 +4,12 @@ include build_scripts/targets.mk
 
 
 $(BUILD_DIR)/c/%.o: $(SRC_DIR)/%.c $(C_HEADERS)
-	@$(MKDIR) $(BUILD_DIR)
-	@$(MKDIR) $(BUILD_DIR)/c
+	@$(MKDIR) $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled c files"
 
 $(BUILD_DIR)/cpp/%.o: $(SRC_DIR)/%.cpp $(CPP_HEADERS)
-	@$(MKDIR) $(BUILD_DIR)
-	@$(MKDIR) $(BUILD_DIR)/cpp
+	@$(MKDIR) $(dir $@)
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 	@echo "Compiled c++ files"
 

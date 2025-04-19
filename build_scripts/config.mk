@@ -15,25 +15,29 @@ BUILD_DIR = build
 DEBUG_DIR = debug
 RELEASE_DIR = release
 
-# files
-C_SRCS := $(wildcard $(SRC_DIR)/*.c)
-C_SRCS += $(wildcard $(SRC_DIR)/*/*.c)
-C_SRCS += $(wildcard $(SRC_DIR)/*/*/*.c)
-C_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*.c)
-C_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*/*.c)
-C_HEADERS := $(wildcard $(SRC_DIR)/*.h)
-C_HEADERS += $(wildcard $(SRC_DIR)/*/*.h)
-C_HEADERS += $(wildcard $(SRC_DIR)/*/*/*.h)
-C_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*.h)
-C_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*/*.h)
+define recurse-C_SRCS
+  $(wildcard $(1)/*.c) \
+  $(foreach dir,$(wildcard $(1)/*),$(call recurse-C_SRCS,$(dir)))
+endef
 
-CPP_SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-CPP_SRCS += $(wildcard $(SRC_DIR)/*/*.cpp)
-CPP_SRCS += $(wildcard $(SRC_DIR)/*/*/*.cpp)
-CPP_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*.cpp)
-CPP_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*/*.cpp)
-CPP_HEADERS := $(wildcard $(SRC_DIR)/*.hpp)
-CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*.hpp)
-CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*/*.hpp)
-CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*.hpp)
-CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*/*.hpp)
+define recurse-C_HEADERS
+  $(wildcard $(1)/*.h) \
+  $(foreach dir,$(wildcard $(1)/*),$(call recurse-C_HEADERS,$(dir)))
+endef
+
+define recurse-CPP_SRCS
+  $(wildcard $(1)/*.cpp) \
+  $(foreach dir,$(wildcard $(1)/*),$(call recurse-CPP_SRCS,$(dir)))
+endef
+
+define recurse-CPP_HEADERS
+  $(wildcard $(1)/*.hpp) \
+  $(foreach dir,$(wildcard $(1)/*),$(call recurse-CPP_HEADERS,$(dir)))
+endef
+
+# files
+C_SRCS := $(call recurse-C_SRCS,$(SRC_DIR))
+C_HEADERS := $(call recurse-C_HEADERS,$(SRC_DIR))
+
+CPP_SRCS := $(call recurse-CPP_SRCS,$(SRC_DIR))
+CPP_HEADERS := $(call recurse-CPP_HEADERS,$(SRC_DIR))
