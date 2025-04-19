@@ -39,7 +39,7 @@ RELEASE_DIR = release
 # files
 C_SRCS := $(wildcard $(SRC_DIR)/*.c)
 CPP_SRCS := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS := $(C_SRCS:$(SRC_DIR)/%.c=$(DEBUG_DIR)/%.o) $(CPP_SRCS:$(SRC_DIR)/%.cpp=$(DEBUG_DIR)/%.o)
+OBJS := $(C_SRCS:$(SRC_DIR)/%.c=$(DEBUG_DIR)/c/%.o) $(CPP_SRCS:$(SRC_DIR)/%.cpp=$(DEBUG_DIR)/cpp/%.o)
 
 # targets
 PREBUILD = preBuild$(EXE_EXT)
@@ -51,13 +51,15 @@ RELEASE = $(RELEASE_DIR)/main$(EXE_EXT)
 all: $(PREBUILD) $(RELEASE)
 
 
-$(DEBUG_DIR)/%.o: $(SRC_DIR)/%.c
+$(DEBUG_DIR)/c/%.o: $(SRC_DIR)/%.c
 	@$(MKDIR) $(DEBUG_DIR)
+	@$(MKDIR) $(DEBUG_DIR)/c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled c files"
 
-$(DEBUG_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(DEBUG_DIR)/cpp/%.o: $(SRC_DIR)/%.cpp
 	@$(MKDIR) $(DEBUG_DIR)
+	@$(MKDIR) $(DEBUG_DIR)/cpp
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 	@echo "Compiled c++ files"
 
@@ -68,7 +70,7 @@ $(PREBUILD): $(OBJS)
 
 
 $(RELEASE): $(OBJS)
-	@mkdir -p $(RELEASE_DIR)
+	@$(MKDIR) $(RELEASE_DIR)
 	@$(CXX) $(OBJS) $(LDFLAGS) $(RELEASE_LDFLAGS) -O2 -o $@
 	@echo "Created release file"
 
