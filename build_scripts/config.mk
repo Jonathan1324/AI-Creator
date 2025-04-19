@@ -10,6 +10,8 @@ RELEASE_LDFLAGS = -s
 
 # directories
 SRC_DIR = src
+BUILD_DIR = build
+
 DEBUG_DIR = debug
 RELEASE_DIR = release
 

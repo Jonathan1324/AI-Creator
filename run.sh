@@ -1,3 +1,4 @@
 make clean
 make all
-./preBuild
+cd debug
+./main

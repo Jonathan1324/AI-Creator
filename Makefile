@@ -3,22 +3,23 @@ include build_scripts/os-specific.mk
 include build_scripts/targets.mk
 
 
-$(DEBUG_DIR)/c/%.o: $(SRC_DIR)/%.c $(C_HEADERS)
-	@$(MKDIR) $(DEBUG_DIR)
-	@$(MKDIR) $(DEBUG_DIR)/c
+$(BUILD_DIR)/c/%.o: $(SRC_DIR)/%.c $(C_HEADERS)
+	@$(MKDIR) $(BUILD_DIR)
+	@$(MKDIR) $(BUILD_DIR)/c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled c files"
 
-$(DEBUG_DIR)/cpp/%.o: $(SRC_DIR)/%.cpp $(CPP_HEADERS)
-	@$(MKDIR) $(DEBUG_DIR)
-	@$(MKDIR) $(DEBUG_DIR)/cpp
+$(BUILD_DIR)/cpp/%.o: $(SRC_DIR)/%.cpp $(CPP_HEADERS)
+	@$(MKDIR) $(BUILD_DIR)
+	@$(MKDIR) $(BUILD_DIR)/cpp
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 	@echo "Compiled c++ files"
 
 
-$(PREBUILD): $(OBJS)
+$(DEBUG): $(OBJS)
+	@$(MKDIR) $(DEBUG_DIR)
 	@$(CXX) $(OBJS) $(LDFLAGS) -o $@
-	@echo "Created preBuild"
+	@echo "Created debug file"
 
 
 $(RELEASE): $(OBJS)
