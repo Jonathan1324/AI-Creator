@@ -3,14 +3,14 @@ extern "C" {
 }
 #include <iostream>
 
-int readFile(const char* filename, Metadata* metadata) {
+int readFile(const char* filename, Data* data) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
         std::cerr << "Error opening file for reading." << std::endl;
         return 1;
     }
 
-    if (!read_metadata(file, metadata)) {
+    if (!read_metadata(file, data->metadata)) {
         std::cerr << "Error reading metadata." << std::endl;
         fclose(file);
         return 1;
@@ -21,14 +21,14 @@ int readFile(const char* filename, Metadata* metadata) {
     return 0;
 }
 
-int writeFile(const char* filename, Metadata* metadata) {
+int writeFile(const char* filename, Data* data) {
     FILE* file = fopen(filename, "wb");
     if (!file) {
         std::cerr << "Error opening file for writing." << std::endl;
         return 1;
     }
 
-    write_metadata(file, metadata);
+    write_metadata(file, data->metadata);
 
     fclose(file);
 
