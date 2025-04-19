@@ -4,6 +4,7 @@ CXX = g++
 
 CFLAGS = -Wall -g -Iinclude
 CXXFLAGS = -Wall -g -Iinclude
+LDFLAGS +=
 
 RELEASE_CFLAGS = -Wall -O2 -Iinclude
 RELEASE_LDFLAGS = -s

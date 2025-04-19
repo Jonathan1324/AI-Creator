@@ -1,5 +1,5 @@
-include build_scripts/config.mk
 include build_scripts/os-specific.mk
+include build_scripts/config.mk
 include build_scripts/targets.mk
 
 
