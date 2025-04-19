@@ -38,7 +38,27 @@ RELEASE_DIR = release
 
 # files
 C_SRCS := $(wildcard $(SRC_DIR)/*.c)
+C_SRCS += $(wildcard $(SRC_DIR)/*/*.c)
+C_SRCS += $(wildcard $(SRC_DIR)/*/*/*.c)
+C_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*.c)
+C_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*/*.c)
+C_HEADERS := $(wildcard $(SRC_DIR)/*.h)
+C_HEADERS += $(wildcard $(SRC_DIR)/*/*.h)
+C_HEADERS += $(wildcard $(SRC_DIR)/*/*/*.h)
+C_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*.h)
+C_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*/*.h)
+
 CPP_SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+CPP_SRCS += $(wildcard $(SRC_DIR)/*/*.cpp)
+CPP_SRCS += $(wildcard $(SRC_DIR)/*/*/*.cpp)
+CPP_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*.cpp)
+CPP_SRCS += $(wildcard $(SRC_DIR)/*/*/*/*/*.cpp)
+CPP_HEADERS := $(wildcard $(SRC_DIR)/*.hpp)
+CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*.hpp)
+CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*/*.hpp)
+CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*.hpp)
+CPP_HEADERS += $(wildcard $(SRC_DIR)/*/*/*/*/*.hpp)
+
 OBJS := $(C_SRCS:$(SRC_DIR)/%.c=$(DEBUG_DIR)/c/%.o) $(CPP_SRCS:$(SRC_DIR)/%.cpp=$(DEBUG_DIR)/cpp/%.o)
 
 # targets
@@ -51,13 +71,13 @@ RELEASE = $(RELEASE_DIR)/main$(EXE_EXT)
 all: $(PREBUILD) $(RELEASE)
 
 
-$(DEBUG_DIR)/c/%.o: $(SRC_DIR)/%.c
+$(DEBUG_DIR)/c/%.o: $(SRC_DIR)/%.c $(C_HEADERS)
 	@$(MKDIR) $(DEBUG_DIR)
 	@$(MKDIR) $(DEBUG_DIR)/c
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled c files"
 
-$(DEBUG_DIR)/cpp/%.o: $(SRC_DIR)/%.cpp
+$(DEBUG_DIR)/cpp/%.o: $(SRC_DIR)/%.cpp $(CPP_HEADERS)
 	@$(MKDIR) $(DEBUG_DIR)
 	@$(MKDIR) $(DEBUG_DIR)/cpp
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
