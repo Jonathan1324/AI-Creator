@@ -98,3 +98,66 @@ void read_ruleset(FILE* file, RuleSetSave *ruleset) {
 
     return;
 }
+
+int writeAIData(FILE* file, AIDataSave* aidata, uint8_t type) {
+    switch(type) {
+        case RULE_BASED:
+            write_ruleset(file, aidata->ruleset);
+            return 1;
+        default:
+            break;
+    }
+    return 0;
+}
+
+int readAIData(FILE* file, AIDataSave* aidata, uint8_t type) {
+    switch (type) {
+        case RULE_BASED:
+            read_ruleset(file, aidata->ruleset);
+            return 1;
+        
+        default:
+            break;
+    }
+    return 0;
+}
+
+int readFile(const char* filename, DataSave* data) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) {
+        perror("Error opening file for reading.\n");
+        return 1;
+    }
+
+    if (!read_metadata(file, data->metadata)) {
+        perror("Error reading metadata.\n");
+        fclose(file);
+        return 1;
+    }
+
+    if (!readAIData(file, data->aidata, data->metadata->type)) {
+        perror("Error reading aidata.\n");
+        fclose(file);
+        return 1;
+    }
+
+    fclose(file);
+
+    return 0;
+}
+
+int writeFile(const char* filename, DataSave* data) {
+    FILE* file = fopen(filename, "wb");
+    if (!file) {
+        perror("Error opening file for writing.\n");
+        return 1;
+    }
+
+    write_metadata(file, data->metadata);
+
+    writeAIData(file, data->aidata, data->metadata->type);
+
+    fclose(file);
+
+    return 0;
+}

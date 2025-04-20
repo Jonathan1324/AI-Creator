@@ -1,8 +1,7 @@
 #include <iostream>
 
 extern "C" {
-    #include "storage/file.h"
-    #include "storage/data.h"
+    #include "storage/storage.h"
 }
 
 int main() {
