@@ -1,10 +1,15 @@
 #include <iostream>
 
-extern "C" {
-    #include "storage/storage.h"
-}
+#include "storage/storage.hpp"
+#include "data/data.hpp"
 
 int main() {
+    Data data;
+
+    initializeData(&data);
+
+    std::cout << data.metadata->name << std::endl;
+    /*
     DataSave data;
 
     initialize_dataSave(&data, 1, 1, 1);
@@ -39,6 +44,7 @@ int main() {
     writeFile("data.dat", &data);
 
     destroy_dataSave(&data);
+    */
 
     return 0;
 }
