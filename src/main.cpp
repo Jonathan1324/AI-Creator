@@ -20,6 +20,22 @@ int main() {
 
     data.aidata->ruleset->rule_count = 1;
 
+    std::shared_ptr<Rule> root_rule = std::make_shared<Rule>();
+
+    root_rule->input_id = 0;
+    root_rule->op = 1;
+    root_rule->compare_input_id = 1;
+    root_rule->compare_value = 100;
+    root_rule->action_type = 0;
+    root_rule->then_rule = nullptr;
+    root_rule->else_rule = nullptr;
+    root_rule->then_output_id = 0;
+    root_rule->then_output_value = 1;
+    root_rule->else_output_id = 0;
+    root_rule->else_output_value = 2;
+    
+    data.aidata->ruleset->root_rule = root_rule;
+
     saveData(&data, "data.dat");
 
     /*

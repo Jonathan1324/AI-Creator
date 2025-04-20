@@ -16,6 +16,8 @@ struct Data {
 
 void initializeData(Data* data);
 
-void convertDataToSaveData(DataSave* dataSave, Data* data);
+void convertMetadataToMetadataSave(DataSave* dataSave, Data* data);
+
+void convertAIDataToAIDataSave(DataSave* dataSave, Data* data);
 
 #endif
