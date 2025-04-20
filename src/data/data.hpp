@@ -1,6 +1,10 @@
 #ifndef DATA_HPP
 #define DATA_HPP
 
+extern "C" {
+    #include "../storage/data.h"
+}
+
 #include "metadata.hpp"
 #include "aidata.hpp"
 #include <memory>
@@ -11,5 +15,7 @@ struct Data {
 };
 
 void initializeData(Data* data);
+
+void convertDataToSaveData(DataSave* dataSave, Data* data);
 
 #endif
