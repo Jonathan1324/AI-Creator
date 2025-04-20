@@ -1,7 +1,5 @@
 #include <iostream>
 
-#define RULE_BASED 0
-
 extern "C" {
     #include "file.h"
     #include "data.h"
@@ -10,37 +8,38 @@ extern "C" {
 int main() {
     Data data;
 
-    Metadata* metadata = new Metadata();
-    data.metadata = metadata;
-
-    initialize_metadata(data.metadata, 2, 1);
-
-    strcpy(metadata->name, "Test Metadata");
-    metadata->type = RULE_BASED;
-
-
-    AIData* aidata = new AIData();
-    data.aidata = aidata;
+    initialize_data(&data, 2, 1, 1);
 
     
+    strcpy(data.metadata->name, "Test Metadata");
+    data.metadata->type = RULE_BASED;
+
+    strcpy(data.metadata->inputs[0].name, "Input 1");
+    data.metadata->inputs[0].id = 0;
+
+    strcpy(data.metadata->inputs[1].name, "Input 2");
+    data.metadata->inputs[1].id = 1;
+
+    strcpy(data.metadata->outputs[0].name, "Output 1");
+    data.metadata->outputs[0].id = 0;
 
 
+    data.aidata->ruleset->rules[0].input_id = 0;
+    data.aidata->ruleset->rules[0].op = 1;
+    data.aidata->ruleset->rules[0].compare_input_id = 1;
+    data.aidata->ruleset->rules[0].compare_value = 100;
+    data.aidata->ruleset->rules[0].action_type = 0;
+    data.aidata->ruleset->rules[0].then_rule_id = 0;
+    data.aidata->ruleset->rules[0].else_rule_id = 0;
+    data.aidata->ruleset->rules[0].then_output_id = 0;
+    data.aidata->ruleset->rules[0].then_output_value = 1;
+    data.aidata->ruleset->rules[0].else_output_id = 0;
+    data.aidata->ruleset->rules[0].else_output_value = 2;
 
-    strcpy(metadata->inputs[0].name, "Input 1");
-    metadata->inputs[0].id = 0;
 
-    strcpy(metadata->inputs[1].name, "Input 2");
-    metadata->inputs[1].id = 1;
-
-    strcpy(metadata->outputs[0].name, "Output 1");
-    metadata->outputs[0].id = 0;
-
-    writeFile("metadata.dat", &data);
+    writeFile("data.dat", &data);
 
     destroy_data(&data);
-
-    delete metadata;
-    delete aidata;
 
     return 0;
 }

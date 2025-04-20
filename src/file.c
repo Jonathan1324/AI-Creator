@@ -22,8 +22,6 @@ void write_metadata(FILE* file, Metadata *metadata) {
         perror("Error writing outputs to file");
         return;
     }
-
-    fclose(file);
 }
 
 int read_metadata(FILE* file, Metadata* metadata) {
@@ -60,4 +58,43 @@ int read_metadata(FILE* file, Metadata* metadata) {
     }
 
     return 1;
+}
+
+void write_ruleset(FILE* file, RuleSet *ruleset) {
+    size_t written = fwrite(ruleset, sizeof(RuleSet) - sizeof(Rule*), 1, file);
+    if (written != 1) {
+        perror("Error writing ruleset to file");
+        return;
+    }
+
+    written = fwrite(ruleset->rules, sizeof(Rule), ruleset->rule_count, file);
+    if (written != ruleset->rule_count) {
+        perror("Error writing rules to file");
+        return;
+    }
+}
+
+void read_ruleset(FILE* file, RuleSet *ruleset) {
+    if (!file || !ruleset) return;
+
+    size_t read = fread(ruleset, sizeof(RuleSet) - sizeof(Rule*), 1, file);
+    if (read != 1) {
+        perror("Error reading ruleset from file");
+        return;
+    }
+
+    ruleset->rules = (Rule*)malloc(ruleset->rule_count * sizeof(Rule));
+    if (ruleset->rules == NULL) {
+        perror("Error allocating memory for rules");
+        return;
+    }
+
+    read = fread(ruleset->rules, sizeof(Rule), ruleset->rule_count, file);
+    if (read != ruleset->rule_count) {
+        perror("Error reading rules from file");
+        free(ruleset->rules); // Speicher freigeben bei Fehler
+        return;
+    }
+
+    return;
 }

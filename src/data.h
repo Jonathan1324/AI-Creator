@@ -9,6 +9,11 @@ typedef struct {
     AIData* aidata;
 } Data;
 
+void initialize_data(Data* data,
+                     uint16_t input_count,
+                     uint16_t output_count,
+                     uint64_t num_rules);
+
 void destroy_data(Data* data);
 
 #endif

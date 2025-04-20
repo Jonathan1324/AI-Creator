@@ -3,6 +3,29 @@ extern "C" {
 }
 #include <iostream>
 
+int writeAIData(FILE* file, AIData* aidata, uint8_t type) {
+    switch(type) {
+        case RULE_BASED:
+            write_ruleset(file, aidata->ruleset);
+            return 1;
+        default:
+            break;
+    }
+    return 0;
+}
+
+int readAIData(FILE* file, AIData* aidata, uint8_t type) {
+    switch (type) {
+        case RULE_BASED:
+            read_ruleset(file, aidata->ruleset);
+            return 1;
+        
+        default:
+            break;
+    }
+    return 0;
+}
+
 int readFile(const char* filename, Data* data) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
@@ -12,6 +35,12 @@ int readFile(const char* filename, Data* data) {
 
     if (!read_metadata(file, data->metadata)) {
         std::cerr << "Error reading metadata." << std::endl;
+        fclose(file);
+        return 1;
+    }
+
+    if (!readAIData(file, data->aidata, data->metadata->type)) {
+        std::cerr << "Error reading aidata." << std::endl;
         fclose(file);
         return 1;
     }
@@ -29,6 +58,8 @@ int writeFile(const char* filename, Data* data) {
     }
 
     write_metadata(file, data->metadata);
+
+    writeAIData(file, data->aidata, data->metadata->type);
 
     fclose(file);
 
