@@ -30,18 +30,18 @@ typedef struct {
 
     uint16_t else_output_id;
     uint64_t else_output_value;
-} Rule;
+} RuleSave;
 
 typedef struct {
     uint64_t rule_count;
     uint64_t root_rule_id;
-    Rule* rules;
-} RuleSet;
+    RuleSave* rules;
+} RuleSetSave;
 
 #pragma pack(pop)
 
-void initialize_ruleset(RuleSet* ruleset, int num_rules);
+void initialize_ruleset(RuleSetSave* ruleset, int num_rules);
 
-void destroy_ruleset(RuleSet* ruleset);
+void destroy_ruleset(RuleSetSave* ruleset);
 
 #endif

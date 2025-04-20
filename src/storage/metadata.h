@@ -8,7 +8,7 @@
 typedef struct {
     uint16_t id;            // 2 bytes for the ID
     char name[254];         // 254 bytes for the name
-} IOEntry;
+} IOEntrySave;
 
 typedef struct {
     char name[255];         // 255 bytes for the name
@@ -17,14 +17,14 @@ typedef struct {
     uint16_t input_count;   // 2 bytes for the number of inputs
     uint16_t output_count;  // 2 bytes for the number of outputs
 
-    IOEntry* inputs;        // Pointer to an array of IOEntry for inputs
-    IOEntry* outputs;       // Pointer to an array of IOEntry for outputs
-} Metadata;
+    IOEntrySave* inputs;        // Pointer to an array of IOEntry for inputs
+    IOEntrySave* outputs;       // Pointer to an array of IOEntry for outputs
+} MetadataSave;
 
 #pragma pack(pop)
 
-int initialize_metadata(Metadata* meta, uint16_t input_count, uint16_t output_count);
+int initialize_metadata(MetadataSave* meta, uint16_t input_count, uint16_t output_count);
 
-void destroy_metadata(Metadata* meta);
+void destroy_metadata(MetadataSave* meta);
 
 #endif

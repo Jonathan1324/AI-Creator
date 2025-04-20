@@ -5,15 +5,15 @@
 #include "aidata.h"
 
 typedef struct {
-    Metadata* metadata;
-    AIData* aidata;
-} Data;
+    MetadataSave* metadata;
+    AIDataSave* aidata;
+} DataSave;
 
-void initialize_data(Data* data,
+void initialize_dataSave(DataSave* data,
                      uint16_t input_count,
                      uint16_t output_count,
                      uint64_t num_rules);
 
-void destroy_data(Data* data);
+void destroy_dataSave(DataSave* data);
 
 #endif

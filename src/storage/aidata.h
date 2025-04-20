@@ -8,13 +8,13 @@
 #pragma pack(push, 1)       // 1-byte alignment
 
 typedef struct {
-    RuleSet* ruleset;
-} AIData;
+    RuleSetSave* ruleset;
+} AIDataSave;
 
 #pragma pack(pop)
 
-void initialize_aidata(AIData* aidata, uint8_t type, uint64_t num_rules);
+void initialize_aidata(AIDataSave* aidata, uint8_t type, uint64_t num_rules);
 
-void destroy_aidata(AIData* aidata, uint8_t type);
+void destroy_aidata(AIDataSave* aidata, uint8_t type);
 
 #endif

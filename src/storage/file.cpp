@@ -3,7 +3,7 @@ extern "C" {
 }
 #include <iostream>
 
-int writeAIData(FILE* file, AIData* aidata, uint8_t type) {
+int writeAIData(FILE* file, AIDataSave* aidata, uint8_t type) {
     switch(type) {
         case RULE_BASED:
             write_ruleset(file, aidata->ruleset);
@@ -14,7 +14,7 @@ int writeAIData(FILE* file, AIData* aidata, uint8_t type) {
     return 0;
 }
 
-int readAIData(FILE* file, AIData* aidata, uint8_t type) {
+int readAIData(FILE* file, AIDataSave* aidata, uint8_t type) {
     switch (type) {
         case RULE_BASED:
             read_ruleset(file, aidata->ruleset);
@@ -26,7 +26,7 @@ int readAIData(FILE* file, AIData* aidata, uint8_t type) {
     return 0;
 }
 
-int readFile(const char* filename, Data* data) {
+int readFile(const char* filename, DataSave* data) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
         std::cerr << "Error opening file for reading." << std::endl;
@@ -50,7 +50,7 @@ int readFile(const char* filename, Data* data) {
     return 0;
 }
 
-int writeFile(const char* filename, Data* data) {
+int writeFile(const char* filename, DataSave* data) {
     FILE* file = fopen(filename, "wb");
     if (!file) {
         std::cerr << "Error opening file for writing." << std::endl;

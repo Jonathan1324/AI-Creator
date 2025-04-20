@@ -1,14 +1,14 @@
 #include <iostream>
 
 extern "C" {
-    #include "file.h"
-    #include "data.h"
+    #include "storage/file.h"
+    #include "storage/data.h"
 }
 
 int main() {
-    Data data;
+    DataSave data;
 
-    initialize_data(&data, 2, 1, 1);
+    initialize_dataSave(&data, 1, 1, 1);
 
     
     strcpy(data.metadata->name, "Test Metadata");
@@ -39,7 +39,7 @@ int main() {
 
     writeFile("data.dat", &data);
 
-    destroy_data(&data);
+    destroy_dataSave(&data);
 
     return 0;
 }
