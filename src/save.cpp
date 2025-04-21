@@ -1,6 +1,6 @@
 #include "save.hpp"
 
-void saveData(Data* data, char* filename) {
+void saveData(Data* data, const char* filename) {
     DataSave dataSave;
 
     initialize_dataSave(&dataSave, data->metadata->input_count, data->metadata->output_count, data->aidata->ruleset->rule_count);
@@ -14,7 +14,7 @@ void saveData(Data* data, char* filename) {
     destroy_dataSave(&dataSave);
 }
 
-void loadData(Data* data, char* filename) {
+void loadData(Data* data, const char* filename) {
     DataSave dataSave;
 
     MetadataSave* metadata = (MetadataSave*)malloc(sizeof(MetadataSave));
@@ -25,7 +25,7 @@ void loadData(Data* data, char* filename) {
 
     readFile(filename, &dataSave);
 
-    
+
 
     destroy_dataSave(&dataSave);
 }

@@ -26,7 +26,7 @@ struct Metadata {
         std::memset(name, 0, sizeof(name));
     }
 
-    void addInput(uint16_t id, char* name) {
+    void addInput(uint16_t id, const char* name) {
         IOEntry entry;
         entry.id = id;
 
@@ -47,7 +47,7 @@ struct Metadata {
         }
     }
 
-    void addOutput(uint16_t id, char* name) {
+    void addOutput(uint16_t id, const char* name) {
         IOEntry entry;
         entry.id = id;
 

@@ -4,8 +4,8 @@
 #include "storage/storage.hpp"
 #include "data/data.hpp"
 
-void saveData(Data* data, char* filename);
+void saveData(Data* data, const char* filename);
 
-void loadData(Data* data, char* filename);
+void loadData(Data* data, const char* filename);
 
 #endif

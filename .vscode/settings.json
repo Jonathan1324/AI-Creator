@@ -40,5 +40,6 @@
         "sstream": "cpp",
         "variant": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "deno.enable": true
 }
