@@ -13,3 +13,19 @@ void saveData(Data* data, char* filename) {
 
     destroy_dataSave(&dataSave);
 }
+
+void loadData(Data* data, char* filename) {
+    DataSave dataSave;
+
+    MetadataSave* metadata = (MetadataSave*)malloc(sizeof(MetadataSave));
+    dataSave.metadata = metadata;
+
+    AIDataSave* aidata = (AIDataSave*)malloc(sizeof(AIDataSave));
+    dataSave.aidata = aidata;
+
+    readFile(filename, &dataSave);
+
+    
+
+    destroy_dataSave(&dataSave);
+}

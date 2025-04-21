@@ -6,4 +6,6 @@
 
 void saveData(Data* data, char* filename);
 
+void loadData(Data* data, char* filename);
+
 #endif

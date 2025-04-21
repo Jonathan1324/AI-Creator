@@ -38,5 +38,13 @@ int main() {
 
     saveData(&data, "data.dat");
 
+    Data d;
+
+    initializeData(&d);
+
+    loadData(&d, "data.dat");
+
+    std::cout << "Name: " << d.metadata->name << std::endl;
+
     return 0;
 }
