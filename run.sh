@@ -1,5 +1,5 @@
-chmod +x ./bootstrap/bootstrap.sh
-sh ./bootstrap/bootstrap.sh
+chmod +x ./toolchain/bootstrap/bootstrap.sh
+sh ./toolchain/bootstrap/bootstrap.sh
 
 ./tools/deno run --allow-read --allow-run --allow-net --allow-write ./toolchain/setup.ts
 
@@ -8,7 +8,9 @@ cd build
 
 ./../tools/cmake/CMake.app/Contents/bin/cmake ..
 
-#make clean
-#make all
-#cd debug
-#./main
+make
+
+cd ../debug
+
+chmod +x ./main
+./main
