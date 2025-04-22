@@ -1,6 +1,4 @@
 export async function downloadTool(url: string, dest: string) {
-    console.log(`⬇️  Lade von ${url} herunter...`);
-  
     let cmd: string[];
 
     if (Deno.build.os === "windows") {

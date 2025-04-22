@@ -1,7 +1,7 @@
 chmod +x ./toolchain/bootstrap/bootstrap.sh
 sh ./toolchain/bootstrap/bootstrap.sh
 
-./tools/deno run --allow-read --allow-run --allow-net --allow-write ./toolchain/setup.ts
+./tools/deno run --allow-read --allow-run --allow-net --allow-write ./toolchain/main.ts
 
 mkdir build
 cd build
@@ -14,3 +14,5 @@ cd ../debug
 
 chmod +x ./main
 ./main
+
+cd ..

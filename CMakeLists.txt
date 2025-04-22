@@ -1,8 +1,19 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 4.0)
 project(MyProject)
 
-set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_COMPILER "g++")
+if(WIN32)
+    # Windows
+    set(CMAKE_C_COMPILER "gcc")
+    set(CMAKE_CXX_COMPILER "g++")
+elseif(APPLE)
+    # macOS
+    set(CMAKE_C_COMPILER "gcc")
+    set(CMAKE_CXX_COMPILER "g++")
+else()
+    # Linux or other Unix-based systems
+    set(CMAKE_C_COMPILER "gcc")
+    set(CMAKE_CXX_COMPILER "g++")
+endif()
 
 set(CMAKE_C_FLAGS "-Wall -g -Iinclude")
 set(CMAKE_CXX_FLAGS "-Wall -g -Iinclude")
