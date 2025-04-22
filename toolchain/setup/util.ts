@@ -4,14 +4,14 @@ export async function downloadTool(url: string, dest: string) {
     let cmd: string[];
 
     if (Deno.build.os === "windows") {
-      cmd = ["powershell", "-Command", `Invoke-WebRequest -Uri ${url} -OutFile ${dest}`];
+      cmd = ["powershell", "-Command", `Invoke-WebRequest -Uri '${url}' -OutFile '${dest}'`];
     } else {
       cmd = ["curl", "-L", url, "-o", dest];
     }
   
     const process = Deno.run({
       cmd: cmd,
-      stdout: "piped",
+      stdout: "null",
       stderr: "piped",
     });
   
@@ -27,12 +27,16 @@ export async function unzipFile(zipPath: string, destDir: string) {
     let unzipCmd: string[];
   
     if (Deno.build.os === "windows") {
-      unzipCmd = ["powershell", "-Command", `Expand-Archive -Path ${zipPath} -DestinationPath ${destDir}`]; // Windows
+      unzipCmd = ["powershell", "-Command", `Expand-Archive -Path '${zipPath}' -DestinationPath '${destDir}'`]; // Windows
     } else {
       unzipCmd = ["unzip", "-o", zipPath, "-d", destDir];
     }
   
-    const process = Deno.run({ cmd: unzipCmd, stdout: "piped", stderr: "piped" });
+    const process = Deno.run({
+      cmd: unzipCmd,
+      stdout: "null",
+      stderr: "piped",
+    });
     
     const status = await process.status();
     
