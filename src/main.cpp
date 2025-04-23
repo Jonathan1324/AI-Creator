@@ -26,7 +26,7 @@ int main() {
     root_rule->op = 1;
     root_rule->compare_input_id = 1;
     root_rule->compare_value = 100;
-    root_rule->action_type = 0;
+    root_rule->action_type = 3;
     root_rule->then_rule = nullptr;
     root_rule->else_rule = nullptr;
     root_rule->then_output_id = 0;
