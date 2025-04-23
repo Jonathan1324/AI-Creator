@@ -17,5 +17,8 @@ export function transpileToShell(command, outputDir) {
     if (command.startsWith('runFile ')) {
         return command.slice(8).trim();
     }
+    if (command.startsWith('pwd')) {
+        return 'pwd';
+    }
     throw new Error("Unsupported command: " + command);
 }

@@ -21,5 +21,8 @@ export function transpileToBatch(command, outputDir) {
     if (command.startsWith('runFile ')) {
         return normalizePathForBatch(command.slice(8).trim());
     }
+    if (command.startsWith('pwd')) {
+        return 'echo %cd%';
+    }
     throw new Error("Unsupported command: " + command);
 }
