@@ -3,4 +3,4 @@ sh ./toolchain/bootstrap/bootstrap.sh
 
 ./tools/deno run --allow-read --allow-run --allow-net --allow-write ./toolchain/main.ts
 
-./build-scripts/main.sh
+source ./build_scripts/main.sh

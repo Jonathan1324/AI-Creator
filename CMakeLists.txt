@@ -21,8 +21,8 @@ set(CMAKE_CXX_FLAGS "-Wall -g -Iinclude")
 set(LDFLAGS "")
 
 
-set(DEBUG_DIR "debug")
-set(RELEASE_DIR "release")
+set(DEBUG_DIR "bin/debug")
+set(RELEASE_DIR "bin/release")
 
 set(RELEASE_CFLAGS "-Wall -O2 -Iinclude")
 

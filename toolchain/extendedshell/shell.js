@@ -6,7 +6,7 @@ export function transpileToShell(command, outputDir) {
         return 'cd ' + command.slice(3).trim();
     }
     if (command.startsWith('call ')) {
-        return 'source ' + outputDir + command.slice(5).trim() + '.sh';
+        return 'sh ' + outputDir + command.slice(5).trim() + '.sh';
     }
     if (command.startsWith('mkdir ')) {
         return 'mkdir ' + command.slice(6).trim();

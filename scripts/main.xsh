@@ -5,9 +5,9 @@ runFile ./../tools/cmake/CMake.app/Contents/bin/cmake ..
 
 runFile make
 
-cd ../debug
+cd ../bin/debug
 
 chmod +x ./main
 runFile ./main
 
-cd ..
+cd ../..

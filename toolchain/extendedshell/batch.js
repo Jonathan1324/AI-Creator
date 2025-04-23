@@ -10,7 +10,7 @@ export function transpileToBatch(command, outputDir) {
         return 'cd ' + normalizePathForBatch(command.slice(3).trim());
     }
     if (command.startsWith('call ')) {
-        return 'call ' + normalizePathForBatch(outputDir) + normalizePathForBatch(command.slice(5).trim()) + '.bat';
+        return 'cmd /c ' + normalizePathForBatch(outputDir) + normalizePathForBatch(command.slice(5).trim()) + '.bat';
     }
     if (command.startsWith('mkdir ')) {
         return 'mkdir ' + normalizePathForBatch(command.slice(6).trim());
