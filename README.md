@@ -1,2 +1,2 @@
 # AI-CREATOR
-File Format to save and read an AI of multiple types (currently only if-else AIs)
+Program to save and read an AI of multiple types in a custom file-format (currently only if-else AIs)
