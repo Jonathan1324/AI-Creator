@@ -1,6 +1,8 @@
 #ifndef RULESET_HPP
 #define RULESET_HPP
 
+#include <memory>
+
 struct Rule {
     uint16_t input_id;
     uint8_t op;
