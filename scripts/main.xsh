@@ -1,5 +1,13 @@
-echo "Hi"
+mkdir build
+cd build
 
-call ./t/test
+runFile ./../tools/cmake/CMake.app/Contents/bin/cmake ..
 
-echo "Hi! You're back"
+runFile make
+
+cd ../debug
+
+chmod +x ./main
+runFile ./main
+
+cd ..

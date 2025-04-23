@@ -12,5 +12,14 @@ export function transpileToBatch(command, outputDir) {
     if (command.startsWith('call ')) {
         return 'call ' + normalizePathForBatch(outputDir) + normalizePathForBatch(command.slice(5).trim()) + '.bat';
     }
+    if (command.startsWith('mkdir ')) {
+        return 'mkdir ' + normalizePathForBatch(command.slice(6).trim());
+    }
+    if (command.startsWith('chmod ')) {
+        return '';
+    }
+    if (command.startsWith('runFile ')) {
+        return normalizePathForBatch(command.slice(8).trim());
+    }
     throw new Error("Unsupported command: " + command);
 }

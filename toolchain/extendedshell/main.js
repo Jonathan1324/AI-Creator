@@ -9,10 +9,14 @@ function transpileScript(script, outputDir) {
 
     for (const line of lines) {
         const trimmed = line.trim();
-        if (trimmed === "") continue;
+        if (trimmed === "" || trimmed.startsWith('#')) continue;
     
-        batchLines.push(transpileToBatch(trimmed, outputDir));
-        shellLines.push(transpileToShell(trimmed, outputDir));
+        try {
+            batchLines.push(transpileToBatch(trimmed, outputDir));
+            shellLines.push(transpileToShell(trimmed, outputDir));
+        } catch (error) {
+            console.error(error + "");
+        }
     }
 
     const batchScript = batchLines.join("\r\n");
