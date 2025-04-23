@@ -1,4 +1,4 @@
-import { setup } from "./setup.ts"
+import { setup } from "./setup/setup.ts"
 
 async function main() {
     await setup();

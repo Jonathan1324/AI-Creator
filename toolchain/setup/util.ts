@@ -21,15 +21,25 @@ export async function downloadTool(url: string, dest: string) {
     }
 }
 
-export async function unzipFile(zipPath: string, destDir: string) {
-    let unzipCmd: string[];
-  
-    if (Deno.build.os === "windows") {
-      unzipCmd = ["powershell", "-Command", `Expand-Archive -Path '${zipPath}' -DestinationPath '${destDir}'`]; // Windows
+export async function unzipFile(zipPath: string, destDir: string, tar: bool) {
+    let unzipCmd: string[]
+
+    if(tar) {
+      if (Deno.build.os === "windows") {
+        unzipCmd = [];
+      } else {
+        unzipCmd = ["tar", "-xzf", zipPath, "-C", destDir];
+      }
+
+
     } else {
-      unzipCmd = ["unzip", "-o", zipPath, "-d", destDir];
+      if (Deno.build.os === "windows") {
+        unzipCmd = ["powershell", "-Command", `Expand-Archive -Path '${zipPath}' -DestinationPath '${destDir}'`]; // Windows
+      } else {
+        unzipCmd = ["unzip", "-q", "-o", zipPath, "-d", destDir];
+      }
     }
-  
+
     const process = Deno.run({
       cmd: unzipCmd,
       stdout: "null",
@@ -59,13 +69,13 @@ export async function fileExists(filePath: string): Promise<boolean> {
 }
 
 export async function createDir(path: string) {
-  try {
-    await Deno.mkdir(path, { recursive: true });
-  } catch (error) {
-    if (error instanceof Deno.errors.AlreadyExists) {} else {
-      throw error;
+    try {
+        await Deno.mkdir(path, { recursive: true });
+    } catch (error) {
+        if (error instanceof Deno.errors.AlreadyExists) {} else {
+            throw error;
+        }
     }
-  }
 }
 
 export async function deleteFile(path: string) {

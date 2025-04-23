@@ -1,4 +1,4 @@
-import { downloadTool, unzipFile, fileExists, createDir, deleteFile } from "./setup/util.ts";
+import { downloadTool, unzipFile, fileExists, createDir, deleteFile } from "./util.ts";
 
 async function installGNUGCC() {
     const gnugccUrlWindows: string = "https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-12.0.0-ucrt-r3/winlibs-x86_64-posix-seh-gcc-14.2.0-llvm-19.1.7-mingw-w64ucrt-12.0.0-r3.zip";
@@ -23,7 +23,7 @@ async function installGNUGCC() {
 
         await downloadTool(gnugccUrlWindows, gnugccDestWindows);
   
-        await unzipFile(gnugccDestWindows, installDir);
+        await unzipFile(gnugccDestWindows, installDir, false);
 
         deleteFile(gnugccDestWindows);
     } else {
@@ -38,7 +38,7 @@ async function installGNUGCC() {
             await downloadTool(gnugccUrlLinux, gnugccDestLinux);
 
             await Deno.run({
-                cmd: ["tar", "-xjzf", gnugccDestLinux, "-C", installDir],
+                cmd: ["tar", "-xjf", gnugccDestLinux, "-C", installDir],
                 stdout: "null",
                 stdeer: "piped",
             }).status();
@@ -47,11 +47,7 @@ async function installGNUGCC() {
         } else {
             await downloadTool(gnugccUrlMac, gnugccDestMac);
 
-            await Deno.run({
-                cmd: ["tar", "-xvzf", gnugccDestMac, "-C", installDir],
-                stdout: "null",
-                stdeer: "piped",
-            }).status();
+            await unzipFile(gnugccDestMac, installDir, true);
 
             deleteFile(gnugccDestMac);
         }
@@ -82,7 +78,7 @@ async function installCMake(): Promise<string> {
   
         await downloadTool(cmakeUrlWindows, cmakeDestWindows);
   
-        await unzipFile(cmakeDestWindows, installDir);
+        await unzipFile(cmakeDestWindows, installDir, false);
 
         await Deno.rename(`./tools/cmake-${cmakeVersion}-windows-x86_64`, "./tools/cmake");
 
@@ -97,11 +93,7 @@ async function installCMake(): Promise<string> {
   
         await downloadTool(Deno.build.os === "linux" ? cmakeUrlLinux : cmakeUrlMac, cmakeDestLinuxMac);
 
-        await Deno.run({
-            cmd: ["tar", "-xvzf", cmakeDestLinuxMac, "-C", installDir],
-            stdout: "null",
-            stdeer: "piped",
-        }).status();
+        await unzipFile(cmakeDestLinuxMac, installDir, true);
 
         await Deno.rename(Deno.build.os === "linux" ? `./tools/cmake-${cmakeVersion}-linux-x86_64` : `./tools/cmake-${cmakeVersion}-macos10.10-universal`, "./tools/cmake");
 
@@ -133,7 +125,7 @@ async function installNinja(): Promise<string> {
   
         await downloadTool(ninjaUrlWindows, ninjaDest);
   
-        await unzipFile(ninjaDest, installDir);
+        await unzipFile(ninjaDest, installDir, false);
     } else {
         const ninjaExists = await fileExists(ninjaFile);
         if (ninjaExists) {
@@ -141,7 +133,7 @@ async function installNinja(): Promise<string> {
         }
         await downloadTool(Deno.build.os === "linux" ? ninjaUrlLinux : ninjaUrlMac, ninjaDest);
   
-        await unzipFile(ninjaDest, installDir);
+        await unzipFile(ninjaDest, installDir, false);
     }
 
     deleteFile(ninjaDest);

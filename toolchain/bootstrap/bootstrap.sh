@@ -28,7 +28,7 @@ DENO_URL="https://github.com/denoland/deno/releases/download/$DENO_VERSION/$DENO
 
 curl -fsSL -o "$DENO_DIR/deno.zip" "$DENO_URL"
 
-unzip -o "$DENO_DIR/deno.zip" -d "$DENO_DIR"
+unzip -q -o "$DENO_DIR/deno.zip" -d "$DENO_DIR"
 rm "$DENO_DIR/deno.zip"
 
 chmod +x "$DENO_BIN"
