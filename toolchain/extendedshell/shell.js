@@ -20,5 +20,11 @@ export function transpileToShell(command, outputDir) {
     if (command.startsWith('pwd')) {
         return 'pwd';
     }
+    if (command.startsWith('ls')) {
+        return 'ls';
+    }
+    if (command.startsWith('rm ')) {
+        return 'rm ' + command.slice(3).trim();
+    }
     throw new Error("Unsupported command: " + command);
 }

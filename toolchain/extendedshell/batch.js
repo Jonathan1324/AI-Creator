@@ -24,5 +24,11 @@ export function transpileToBatch(command, outputDir) {
     if (command.startsWith('pwd')) {
         return 'echo %cd%';
     }
+    if (command.startsWith('ls')) {
+        return 'dir';
+    }
+    if (command.startsWith('rm ')) {
+        return 'del ' + normalizePathForBatch(command.slice(3).trim());
+    }
     throw new Error("Unsupported command: " + command);
 }
