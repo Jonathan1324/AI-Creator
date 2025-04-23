@@ -107,3 +107,86 @@ void convertAIDataToAIDataSave(DataSave* dataSave, Data* data) {
     dataSave->aidata->ruleset->root_rule_id = root_id;
     dataSave->aidata->ruleset->rules = rule_saves;
 }
+
+
+void convertMetadataSaveToMetadata(DataSave* dataSave, Data* data) {
+    std::strncpy(data->metadata->name, dataSave->metadata->name, sizeof(data->metadata->name) - 1);
+    data->metadata->name[sizeof(data->metadata->name) - 1] = '\0';
+
+    data->metadata->type = dataSave->metadata->type;
+
+    data->metadata->inputs.clear();
+    data->metadata->outputs.clear();
+    
+    for (int i = 0; i < dataSave->metadata->input_count; ++i) {
+        uint16_t id = dataSave->metadata->inputs[i].id;
+        const char* name = dataSave->metadata->inputs[i].name;
+
+        data->metadata->addInput(id, name);
+    }
+
+    for (int i = 0; i < dataSave->metadata->output_count; ++i) {
+        uint16_t id = dataSave->metadata->outputs[i].id;
+        const char* name = dataSave->metadata->outputs[i].name;
+
+        data->metadata->addOutput(id, name);
+    }
+}
+
+void convertRuleSavetoRule(RuleSave* ruleSave, std::shared_ptr<Rule> rule) {
+    rule->input_id = ruleSave->input_id;
+    rule->op = ruleSave->op;
+    rule->compare_input_id = ruleSave->compare_input_id;
+    rule->compare_value = ruleSave->compare_value;
+    
+    rule->action_type = ruleSave->action_type;
+
+    rule->then_output_id = ruleSave->then_output_id;
+    rule->then_output_value = ruleSave->then_output_value;
+
+    rule->else_output_id = ruleSave->else_output_id;
+    rule->else_output_value = ruleSave->else_output_value;
+}
+
+std::shared_ptr<Rule> buildRuleFromSave(
+    RuleSave* rules,
+    uint64_t rule_id,
+    std::unordered_map<uint64_t, std::shared_ptr<Rule> >& created_rules
+) {
+    if (created_rules.count(rule_id)) {
+        return created_rules[rule_id];
+    }
+
+    RuleSave* ruleSave = &rules[rule_id];
+    std::shared_ptr<Rule> rule = std::make_shared<Rule>();
+
+    convertRuleSavetoRule(ruleSave, rule);
+    created_rules[rule_id] = rule;
+
+    if (ruleSave->then_rule_id != UINT64_MAX) {
+        rule->then_rule = buildRuleFromSave(rules, ruleSave->then_rule_id, created_rules);
+    } else {
+        rule->then_rule = nullptr;
+    }
+
+    if (ruleSave->else_rule_id != UINT64_MAX) {
+        rule->else_rule = buildRuleFromSave(rules, ruleSave->else_rule_id, created_rules);
+    } else {
+        rule->else_rule = nullptr;
+    }
+
+    return rule;
+}
+
+void convertAIDataSaveToAIData(DataSave* dataSave, Data* data) {
+    data->aidata->ruleset->rule_count = dataSave->aidata->ruleset->rule_count;
+
+    std::unordered_map<uint64_t, std::shared_ptr<Rule> > created_rules;
+
+    uint64_t root_id = dataSave->aidata->ruleset->root_rule_id;
+    RuleSave* rules = dataSave->aidata->ruleset->rules;
+
+    std::shared_ptr<Rule> root_rule = buildRuleFromSave(rules, root_id, created_rules);
+
+    data->aidata->ruleset->root_rule = root_rule;
+}

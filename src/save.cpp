@@ -1,4 +1,5 @@
 #include "save.hpp"
+#include <iostream>
 
 void saveData(Data* data, const char* filename) {
     DataSave dataSave;
@@ -23,9 +24,14 @@ void loadData(Data* data, const char* filename) {
     AIDataSave* aidata = (AIDataSave*)malloc(sizeof(AIDataSave));
     dataSave.aidata = aidata;
 
+    RuleSetSave* ruleset = (RuleSetSave*)malloc(sizeof(RuleSetSave));
+    aidata->ruleset = ruleset;
+
     readFile(filename, &dataSave);
 
+    convertMetadataSaveToMetadata(&dataSave, data);
 
+    convertAIDataSaveToAIData(&dataSave, data);
 
     destroy_dataSave(&dataSave);
 }

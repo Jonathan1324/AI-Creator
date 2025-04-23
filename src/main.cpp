@@ -44,7 +44,5 @@ int main() {
 
     loadData(&d, "data.dat");
 
-    std::cout << "Name: " << d.metadata->name << std::endl;
-
     return 0;
 }

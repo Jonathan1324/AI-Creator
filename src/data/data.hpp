@@ -20,4 +20,9 @@ void convertMetadataToMetadataSave(DataSave* dataSave, Data* data);
 
 void convertAIDataToAIDataSave(DataSave* dataSave, Data* data);
 
+
+void convertMetadataSaveToMetadata(DataSave* dataSave, Data* data);
+
+void convertAIDataSaveToAIData(DataSave* dataSave, Data* data);
+
 #endif
