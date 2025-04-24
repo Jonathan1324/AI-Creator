@@ -30,55 +30,11 @@ set(RELEASE_LDFLAGS "-s")
 
 
 file(GLOB_RECURSE CPP_SRCS "src/*.cpp")
-file(GLOB_RECURSE CPP_HEADERS "src/*.hpp")
 
 file(GLOB_RECURSE C_SRCS "src/*.c")
-file(GLOB_RECURSE C_HEADERS "src/*.h")
-
-
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/c)
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/cpp)
-
-
-set(OBJECT_FILES "")
-
-function(get_obj_path out_var src_file type_folder)
-    file(RELATIVE_PATH rel_path "${CMAKE_SOURCE_DIR}/src" "${src_file}")
-    string(REPLACE ".cpp" ".o" rel_path "${rel_path}")
-    string(REPLACE ".c"   ".o" rel_path "${rel_path}")
-    set(${out_var} "${CMAKE_BINARY_DIR}/${type_folder}/${rel_path}" PARENT_SCOPE)
-endfunction()
-
-# C Files
-foreach(src ${C_SRCS})
-    get_obj_path(obj_path ${src} "c")
-    get_filename_component(obj_dir ${obj_path} DIRECTORY)
-    file(MAKE_DIRECTORY ${obj_dir})
-
-    add_custom_command(
-        OUTPUT ${obj_path}
-        COMMAND ${CMAKE_C_COMPILER} -c ${src} -o ${obj_path}
-        DEPENDS ${src} ${C_HEADERS}
-    )
-    list(APPEND OBJECT_FILES ${obj_path})
-endforeach()
-
-# C++ Files
-foreach(src ${CPP_SRCS})
-    get_obj_path(obj_path ${src} "cpp")
-    get_filename_component(obj_dir ${obj_path} DIRECTORY)
-    file(MAKE_DIRECTORY ${obj_dir})
-
-    add_custom_command(
-        OUTPUT ${obj_path}
-        COMMAND ${CMAKE_CXX_COMPILER} -c ${src} -o ${obj_path}
-        DEPENDS ${src} ${CPP_HEADERS}
-    )
-    list(APPEND OBJECT_FILES ${obj_path})
-endforeach()
 
 # Debug
-add_executable(DEBUG ${OBJECT_FILES})
+add_executable(DEBUG ${C_SRCS} ${CPP_SRCS})
 set_target_properties(DEBUG PROPERTIES LINKER_LANGUAGE CXX)
 
 set_target_properties(DEBUG PROPERTIES
@@ -89,7 +45,7 @@ set_target_properties(DEBUG PROPERTIES
 target_link_options(DEBUG PRIVATE ${LDFLAGS})
 
 # Release
-add_executable(RELEASE ${OBJECT_FILES})
+add_executable(RELEASE ${C_SRCS} ${CPP_SRCS})
 set_target_properties(RELEASE PROPERTIES LINKER_LANGUAGE CXX)
 
 set_target_properties(RELEASE PROPERTIES
