@@ -1,10 +1,11 @@
-export async function deleteFolderRecursive(folderPath: string) {
+export async function deleteFolderRecursive(folderPath) {
     try {
         const info = await Deno.stat(folderPath);
         if (!info.isDirectory) {
             return;
         }
     } catch (err) {
+        err;
         return;
     }
 

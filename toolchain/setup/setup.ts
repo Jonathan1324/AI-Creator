@@ -1,4 +1,4 @@
-import { downloadTool, unzipFile, fileExists, createDir, deleteFile } from "./util.ts";
+import { downloadTool, unzipFile, fileExists, _createDir, deleteFile, chmod } from "./util.ts";
 
 async function installGNUGCC() {
     const gnugccUrlWindows: string = "https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-12.0.0-ucrt-r3/winlibs-x86_64-posix-seh-gcc-14.2.0-llvm-19.1.7-mingw-w64ucrt-12.0.0-r3.zip";
@@ -23,7 +23,7 @@ async function installGNUGCC() {
 
         await downloadTool(gnugccUrlWindows, gnugccDestWindows);
   
-        await unzipFile(gnugccDestWindows, installDir, false);
+        await unzipFile(gnugccDestWindows, installDir, false, false);
 
         deleteFile(gnugccDestWindows);
     } else {
@@ -37,17 +37,13 @@ async function installGNUGCC() {
 
             await downloadTool(gnugccUrlLinux, gnugccDestLinux);
 
-            await Deno.run({
-                cmd: ["tar", "-xjf", gnugccDestLinux, "-C", installDir],
-                stdout: "null",
-                stdeer: "piped",
-            }).status();
+            await unzipFile(gnugccDestLinux, installDir, true, true);
 
             deleteFile(gnugccDestLinux);
         } else {
             await downloadTool(gnugccUrlMac, gnugccDestMac);
 
-            await unzipFile(gnugccDestMac, installDir, true);
+            await unzipFile(gnugccDestMac, installDir, true, false);
 
             deleteFile(gnugccDestMac);
         }
@@ -66,7 +62,7 @@ async function installCMake(): Promise<string> {
     const cmakeDestLinuxMac: string = "./tools/cmake.tar.gz";
     const installDir: string = "./tools";
 
-    var cmakeFile: string = "./tools/cmake/";
+    let cmakeFile: string = "./tools/cmake/";
   
     if (Deno.build.os === "windows") {
         cmakeFile += "bin/cmake.exe";
@@ -78,7 +74,7 @@ async function installCMake(): Promise<string> {
   
         await downloadTool(cmakeUrlWindows, cmakeDestWindows);
   
-        await unzipFile(cmakeDestWindows, installDir, false);
+        await unzipFile(cmakeDestWindows, installDir, false, false);
 
         await Deno.rename(`./tools/cmake-${cmakeVersion}-windows-x86_64`, "./tools/cmake");
 
@@ -93,7 +89,7 @@ async function installCMake(): Promise<string> {
   
         await downloadTool(Deno.build.os === "linux" ? cmakeUrlLinux : cmakeUrlMac, cmakeDestLinuxMac);
 
-        await unzipFile(cmakeDestLinuxMac, installDir, true);
+        await unzipFile(cmakeDestLinuxMac, installDir, true, false);
 
         await Deno.rename(Deno.build.os === "linux" ? `./tools/cmake-${cmakeVersion}-linux-x86_64` : `./tools/cmake-${cmakeVersion}-macos10.10-universal`, "./tools/cmake");
 
@@ -112,7 +108,7 @@ async function installNinja(): Promise<string> {
     const ninjaDest: string = "./tools/ninja.zip";
     const installDir: string = "./tools/ninja";
 
-    var ninjaFile: string = "./tools/ninja/ninja";
+    let ninjaFile: string = "./tools/ninja/ninja";
 
     Deno.mkdir(installDir, { recursive: true });
   
@@ -125,7 +121,7 @@ async function installNinja(): Promise<string> {
   
         await downloadTool(ninjaUrlWindows, ninjaDest);
   
-        await unzipFile(ninjaDest, installDir, false);
+        await unzipFile(ninjaDest, installDir, false, false);
     } else {
         const ninjaExists = await fileExists(ninjaFile);
         if (ninjaExists) {
@@ -133,7 +129,7 @@ async function installNinja(): Promise<string> {
         }
         await downloadTool(Deno.build.os === "linux" ? ninjaUrlLinux : ninjaUrlMac, ninjaDest);
   
-        await unzipFile(ninjaDest, installDir, false);
+        await unzipFile(ninjaDest, installDir, false, false);
     }
 
     deleteFile(ninjaDest);
@@ -145,20 +141,12 @@ async function downloadFiles() {
     console.log("Installing Ninja...")
     const ninja: string = await installNinja();
 
-    if (Deno.build.os !== "windows") {
-        await Deno.run({
-            cmd: ["chmod", "+x", ninja],
-        }).status();
-    }
+    chmod(ninja, "x");
 
     console.log("Installing CMake...")
     const cmake: string = await installCMake();
 
-    if (Deno.build.os !== "windows") {
-        await Deno.run({
-            cmd: ["chmod", "+x", cmake],
-        }).status();
-    }
+    chmod(cmake, "x");
 
     console.log("Installing GNU GCC...")
     await installGNUGCC();
