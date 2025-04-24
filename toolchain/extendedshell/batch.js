@@ -19,7 +19,10 @@ export function transpileToBatch(command, outputDir) {
         return '';
     }
     if (command.startsWith('runFile ')) {
-        return normalizePathForBatch(command.slice(8).trim());
+        const args = command.slice(8).trim().split(' ');
+        const firstArg = normalizePathForBatch(args[0]);
+        const restArgs = args.slice(1).join(' ');
+        return `runFile ${firstArg}${restArgs ? ' ' + restArgs : ''}`;
     }
     if (command.startsWith('pwd')) {
         return 'echo %cd%';
