@@ -5,11 +5,10 @@ runFile ./../tools/cmake/CMake.app/Contents/bin/cmake -G Ninja -DCMAKE_MAKE_PROG
 
 runFile ../tools/ninja/ninja
 
-cd ../bin/debug
+cd ..
 
-chmod +x ./main
+call chmod
+
+cd ./bin/debug
+
 runFile ./main
-
-chmod +x ../release/main
-
-cd ../..
