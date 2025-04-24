@@ -21,7 +21,9 @@ export async function transpileXsh(inputRoot: string, outputRoot: string) {
 
             await convertFile(inputPath, outputDir, fileName.slice(0, -4));
 
-            await Deno.chmod(outputDir + fileName.slice(0, -4) + ".sh", 0o755);
+            if (Deno.build.os !== "windows") {
+                await Deno.chmod(outputDir + fileName.slice(0, -4) + ".sh", 0o755);
+            }
         }
     }
 }

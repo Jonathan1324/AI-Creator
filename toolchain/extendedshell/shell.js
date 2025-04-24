@@ -26,5 +26,14 @@ export function transpileToShell(command, outputDir) {
     if (command.startsWith('rm ')) {
         return 'rm ' + command.slice(3).trim();
     }
+    if (command.startsWith('runWindows ')) {
+        return "";
+    }
+    if (command.startsWith('runMac ')) {
+        return "if [ \"$(uname)\" = \"Darwin\" ]; then\n" + command.slice(7).trim() + "\nfi";
+    }
+    if (command.startsWith('runLinux ')) {
+        return "if [ \"$(uname)\" = \"Linux\" ]; then\n" + command.slice(9).trim() + "\nfi";
+    }
     throw new Error("Unsupported command: " + command);
 }
