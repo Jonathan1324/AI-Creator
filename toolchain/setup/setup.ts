@@ -9,7 +9,7 @@ async function installGNUGCC() {
     const gnugccDestLinux: string = "./tools/x86-64--glibc--bleeding-edge-2021.11-5.tar.bz2"
     const gnugccDestMac: string = "./tools/gcc-macos.tar.gz";
 
-    const installDir: string = "./tools/gnugcc/"
+    const installDir: string = "./tools/"
 
     Deno.mkdir(installDir, { recursive: true });
 
@@ -24,6 +24,8 @@ async function installGNUGCC() {
         await downloadTool(gnugccUrlWindows, gnugccDestWindows);
   
         await unzipFile(gnugccDestWindows, installDir, false, false);
+
+        await Deno.rename(`./tools/mingw64`, "./tools/gnugcc");
 
         deleteFile(gnugccDestWindows);
     } else {

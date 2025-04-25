@@ -4,8 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:\\msys64\\mingw64\\include",
-                "C:\\msys64\\mingw64\\include\\c++\\14.2.0"
+                "${workspaceFolder}/tools/gnugcc/include",
+                "${workspaceFolder}/tools/gnugcc/include/c++/14.2.0"
             ],
             "defines": [
                 "_DEBUG",

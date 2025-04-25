@@ -40,7 +40,26 @@
         "sstream": "cpp",
         "variant": "cpp",
         "algorithm": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "array": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+        "*.tcc": "cpp",
+        "charconv": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "condition_variable": "cpp",
+        "exception": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "format": "cpp",
+        "print": "cpp",
+        "span": "cpp",
+        "queue": "cpp"
     },
     "deno.enable": true
 }

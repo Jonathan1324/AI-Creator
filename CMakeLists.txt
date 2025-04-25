@@ -3,12 +3,12 @@ project(MyProject)
 
 if(WIN32)
     # Windows
-    set(CMAKE_C_COMPILER "../tools/gnugcc/mingw64/bin/gcc")
-    set(CMAKE_CXX_COMPILER "../tools/gnugcc/mingw64/bin/g++")
+    set(CMAKE_C_COMPILER "../tools/gnugcc/bin/gcc")
+    set(CMAKE_CXX_COMPILER "../tools/gnugcc/bin/g++")
 elseif(APPLE)
     # macOS
-    set(CMAKE_C_COMPILER "../tools/gnugcc/gnugcc/bin/gcc-14")
-    set(CMAKE_CXX_COMPILER "../tools/gnugcc/gnugcc/bin/g++-14")
+    set(CMAKE_C_COMPILER "../tools/gnugcc/bin/gcc-14")
+    set(CMAKE_CXX_COMPILER "../tools/gnugcc/bin/g++-14")
 else()
     # Linux or other Unix-based systems
     set(CMAKE_C_COMPILER "gcc")
