@@ -7,8 +7,8 @@ if(WIN32)
     set(CMAKE_CXX_COMPILER "../tools/gnugcc/mingw64/bin/g++")
 elseif(APPLE)
     # macOS
-    set(CMAKE_C_COMPILER "gcc")
-    set(CMAKE_CXX_COMPILER "g++")
+    set(CMAKE_C_COMPILER "../tools/gnugcc/gnugcc/bin/gcc-14")
+    set(CMAKE_CXX_COMPILER "../tools/gnugcc/gnugcc/bin/g++-14")
 else()
     # Linux or other Unix-based systems
     set(CMAKE_C_COMPILER "gcc")
