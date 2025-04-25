@@ -1,8 +1,53 @@
 import { downloadTool, unzipFile, fileExists, _createDir, deleteFile, chmod } from "./util.ts";
 
+async function installDocker(): Promise<string> {
+    const version: string = "28.1.1";
+    
+    const dockerUrlWindows: string = `https://download.docker.com/win/static/stable/x86_64/docker-${version}.zip`;
+    const dockerUrlLinux: string = `https://download.docker.com/linux/static/stable/x86_64/docker-${version}.zip`;
+    const dockerUrlMac: string = `https://download.docker.com/mac/static/stable/x86_64/docker-${version}.zip`;
+
+    const dockerDest: string = `./tools/docker-${version}.zip`;
+
+    const installDir: string = "./tools/";
+
+    let dockerFile: string = "./tools/docker/docker";
+
+    Deno.mkdir(installDir, { recursive: true });
+
+    if (Deno.build.os === "windows") {
+        dockerFile += ".exe"
+        const ninjaExists = await fileExists(dockerFile);
+        if (ninjaExists) {
+            return dockerFile;
+        }
+
+        console.log("Installing Docker...");
+  
+        await downloadTool(dockerUrlWindows, dockerDest);
+  
+        await unzipFile(dockerDest, installDir, false, false);
+    } else {
+        const ninjaExists = await fileExists(dockerFile);
+        if (ninjaExists) {
+            return dockerFile;
+        }
+
+        console.log("Installing Docker...");
+
+        await downloadTool(Deno.build.os === "linux" ? dockerUrlLinux : dockerUrlMac, dockerDest);
+  
+        await unzipFile(dockerDest, installDir, false, false);
+    }
+
+    deleteFile(dockerDest);
+
+    return dockerFile;
+}
+
 async function installGNUGCC() {
     const gnugccUrlWindows: string = "https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-12.0.0-ucrt-r3/winlibs-x86_64-posix-seh-gcc-14.2.0-llvm-19.1.7-mingw-w64ucrt-12.0.0-r3.zip";
-    const gnugccUrlLinux: string = "https://toolchains.bootlin.com/downloads/releases/toolchains/x86-64/tarballs/x86-64--glibc--bleeding-edge-2021.11-5.tar.bz2";
+    const gnugccUrlLinux: string = "https://www.dropbox.com/scl/fi/hph006c1nrok9kkakel2n/gcc-linux.tar.gz?rlkey=0r7xrzgf1sv7mejowinn7mpd8&st=rfznlxq1&dl=0";
     const gnugccUrlMac: string = "https://www.dropbox.com/scl/fi/nbuzxjqclvsvqn21aziqs/gcc-macos.tar.gz?rlkey=64vwqeo5c7gfxbi1r9y5t6hhe&st=f6ybu0qi&dl=0";
 
     const gnugccDestWindows: string = "./tools/inlibs-x86_64-posix-seh-gcc-14.2.0-llvm-19.1.7-mingw-w64ucrt-12.0.0-r3.zip";
@@ -14,8 +59,6 @@ async function installGNUGCC() {
     Deno.mkdir(installDir, { recursive: true });
 
     if (Deno.build.os === "windows") {
-        // TEST IT !!!!
-
         const gnugccInstalled = await fileExists("./tools/gnugcc/installed.txt");
         if (gnugccInstalled) {
             return;
@@ -39,11 +82,9 @@ async function installGNUGCC() {
         console.log("Installing GNU GCC...");
 
         if(Deno.build.os === "linux") {
-            // TEST IT !!!!
-
             await downloadTool(gnugccUrlLinux, gnugccDestLinux);
 
-            await unzipFile(gnugccDestLinux, installDir, true, true);
+            await unzipFile(gnugccDestLinux, installDir, true, false);
 
             deleteFile(gnugccDestLinux);
         } else {
@@ -160,6 +201,9 @@ async function downloadFiles() {
     chmod(cmake, "x");
 
     await installGNUGCC();
+
+    const docker: string = await installDocker();
+    chmod(docker, "x");
 }
 
 export async function setup() {
