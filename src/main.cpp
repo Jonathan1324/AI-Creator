@@ -1,4 +1,6 @@
 #include <iostream>
+#include <memory>
+#include <cstring>
 
 #include "save.hpp"
 

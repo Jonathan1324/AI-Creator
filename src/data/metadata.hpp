@@ -2,6 +2,7 @@
 #define METADATA_HPP
 
 #include <vector>
+#include <cstring>
 
 struct IOEntry {
     uint16_t id;

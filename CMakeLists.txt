@@ -3,8 +3,8 @@ project(MyProject)
 
 if(WIN32)
     # Windows
-    set(CMAKE_C_COMPILER "gcc")
-    set(CMAKE_CXX_COMPILER "g++")
+    set(CMAKE_C_COMPILER "../tools/gnugcc/mingw64/bin/gcc")
+    set(CMAKE_CXX_COMPILER "../tools/gnugcc/mingw64/bin/g++")
 elseif(APPLE)
     # macOS
     set(CMAKE_C_COMPILER "gcc")

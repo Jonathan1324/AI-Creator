@@ -39,7 +39,8 @@
         "ratio": "cpp",
         "sstream": "cpp",
         "variant": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "stack": "cpp"
     },
     "deno.enable": true
 }

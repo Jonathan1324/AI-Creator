@@ -1,6 +1,6 @@
 #include "data.hpp"
 #include <stack>
-#include <unordered_set>
+#include <unordered_map>
 #include <iostream>
 
 void initializeData(Data* data) {
@@ -37,9 +37,9 @@ void convertMetadataToMetadataSave(DataSave* dataSave, Data* data) {
     }
 }
 
-std::vector<std::shared_ptr<Rule> > collectAllRules(std::shared_ptr<Rule>& root_rule) {
-    std::stack<std::shared_ptr<Rule> > stack;
-    std::vector<std::shared_ptr<Rule> > rules;
+std::vector<std::shared_ptr<Rule>> collectAllRules(std::shared_ptr<Rule>& root_rule) {
+    std::stack<std::shared_ptr<Rule>> stack;
+    std::vector<std::shared_ptr<Rule>> rules;
 
     stack.push(root_rule);
 
@@ -66,7 +66,7 @@ std::vector<std::shared_ptr<Rule> > collectAllRules(std::shared_ptr<Rule>& root_
 }
 
 void convertAIDataToAIDataSave(DataSave* dataSave, Data* data) {
-    std::vector<std::shared_ptr<Rule> > all_rules = collectAllRules(data->aidata->ruleset->root_rule);
+    std::vector<std::shared_ptr<Rule>> all_rules = collectAllRules(data->aidata->ruleset->root_rule);
     std::unordered_map<const Rule*, uint64_t> rule_to_id;
 
     for (size_t i = 0; i < all_rules.size(); ++i) {
@@ -151,7 +151,7 @@ void convertRuleSavetoRule(RuleSave* ruleSave, std::shared_ptr<Rule> rule) {
 std::shared_ptr<Rule> buildRuleFromSave(
     RuleSave* rules,
     uint64_t rule_id,
-    std::unordered_map<uint64_t, std::shared_ptr<Rule> >& created_rules
+    std::unordered_map<uint64_t, std::shared_ptr<Rule>>& created_rules
 ) {
     if (created_rules.count(rule_id)) {
         return created_rules[rule_id];
@@ -181,7 +181,7 @@ std::shared_ptr<Rule> buildRuleFromSave(
 void convertAIDataSaveToAIData(DataSave* dataSave, Data* data) {
     data->aidata->ruleset->rule_count = dataSave->aidata->ruleset->rule_count;
 
-    std::unordered_map<uint64_t, std::shared_ptr<Rule> > created_rules;
+    std::unordered_map<uint64_t, std::shared_ptr<Rule>> created_rules;
 
     uint64_t root_id = dataSave->aidata->ruleset->root_rule_id;
     RuleSave* rules = dataSave->aidata->ruleset->rules;
