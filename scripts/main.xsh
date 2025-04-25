@@ -1,4 +1,5 @@
-mkdir build
+call ./$BUILD_DIR/mkdir
+
 cd build
 
 runWindows ./../tools/cmake/bin/cmake -G Ninja -DCMAKE_MAKE_PROGRAM=..\tools\ninja\ninja ..

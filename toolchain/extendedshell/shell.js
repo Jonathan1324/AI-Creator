@@ -12,7 +12,7 @@ export function transpileToShell(cmd, outputDir) {
         return 'sh ' + command.slice(5).trim() + '.sh';
     }
     if (command.startsWith('mkdir ')) {
-        return 'mkdir -p' + command.slice(6).trim();
+        return 'mkdir -p ' + command.slice(6).trim();
     }
     if (command.startsWith('chmod ')) {
         return 'chmod ' + command.slice(6).trim();
@@ -33,10 +33,10 @@ export function transpileToShell(cmd, outputDir) {
         return "";
     }
     if (command.startsWith('runMac ')) {
-        return "if [ \"$(uname)\" = \"Darwin\" ]; then\n" + command.slice(7).trim() + "\nfi";
+        return "if [ \"$(uname)\" = \"Darwin\" ]; then\n    " + command.slice(7).trim() + "\nfi";
     }
     if (command.startsWith('runLinux ')) {
-        return "if [ \"$(uname)\" = \"Linux\" ]; then\n" + command.slice(9).trim() + "\nfi";
+        return "if [ \"$(uname)\" = \"Linux\" ]; then\n    " + command.slice(9).trim() + "\nfi";
     }
     throw new Error("Unsupported command: " + command);
 }
