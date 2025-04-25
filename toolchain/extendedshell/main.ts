@@ -19,7 +19,7 @@ export async function transpileXsh(inputRoot: string, outputRoot: string) {
             const outputDir = `${outputRoot}/${relative.substring(0, relative.lastIndexOf("/"))}/`.replace(/\/+/g, "/");
             const fileName = entry.name;
 
-            await convertFile(inputPath, outputDir, fileName.slice(0, -4));
+            await convertFile(inputPath, outputDir, fileName.slice(0, -4), outputRoot);
 
             if (Deno.build.os !== "windows") {
                 await Deno.chmod(outputDir + fileName.slice(0, -4) + ".sh", 0o755);

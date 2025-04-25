@@ -7,10 +7,10 @@ runLinux ./../tools/cmake/bin/cmake -G Ninja -DCMAKE_MAKE_PROGRAM=/Users/jonatha
 
 runFile ../tools/ninja/ninja
 
-cd ..
+cd ../bin
 
-call chmod
+call ../$BUILD_DIR/chmod
 
-cd ./bin/debug
+cd ./debug
 
 runFile ./main

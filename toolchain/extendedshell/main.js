@@ -1,7 +1,7 @@
 import { transpileToBatch } from "./batch.js"
 import { transpileToShell } from "./shell.js"
 
-function transpileScript(script, outputDir) {
+function transpileScript(script, outputRoot) {
     const lines = script.split(/\r?\n/);
 
     const batchLines = [];
@@ -12,8 +12,8 @@ function transpileScript(script, outputDir) {
         if (trimmed === "" || trimmed.startsWith('#')) continue;
     
         try {
-            batchLines.push(transpileToBatch(trimmed, outputDir));
-            shellLines.push(transpileToShell(trimmed, outputDir));
+            batchLines.push(transpileToBatch(trimmed, outputRoot));
+            shellLines.push(transpileToShell(trimmed, outputRoot));
         } catch (error) {
             console.error(error + "");
         }
@@ -25,10 +25,10 @@ function transpileScript(script, outputDir) {
     return { batchScript, shellScript };
 }
 
-export async function convertFile(inputPath, outputDir, fileName) {
+export async function convertFile(inputPath, outputDir, fileName, outputRoot) {
     const content = await Deno.readTextFile(inputPath);
     
-    const { batchScript, shellScript } = transpileScript(content, outputDir);
+    const { batchScript, shellScript } = transpileScript(content, outputRoot);
 
     await Deno.mkdir(outputDir, { recursive: true });
 

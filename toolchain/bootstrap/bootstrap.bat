@@ -22,3 +22,4 @@ powershell -Command "Invoke-WebRequest -Uri %DENO_URL% -OutFile %DENO_DIR%\deno.
 
 powershell -Command "Expand-Archive -Path %DENO_DIR%\deno.zip -DestinationPath %DENO_DIR% -Force"
 del "%DENO_DIR%\deno.zip"
+@echo on

@@ -1,4 +1,7 @@
-export function transpileToShell(command, outputDir) {
+export function transpileToShell(cmd, outputDir) {
+    let command = cmd;
+    command = command.replace("$BUILD_DIR", outputDir);
+
     if (command.startsWith('echo ')) {
         return 'echo ' + command.slice(5).trim();
     }
@@ -6,10 +9,10 @@ export function transpileToShell(command, outputDir) {
         return 'cd ' + command.slice(3).trim();
     }
     if (command.startsWith('call ')) {
-        return 'sh ' + outputDir + command.slice(5).trim() + '.sh';
+        return 'sh ' + command.slice(5).trim() + '.sh';
     }
     if (command.startsWith('mkdir ')) {
-        return 'mkdir ' + command.slice(6).trim();
+        return 'mkdir -p' + command.slice(6).trim();
     }
     if (command.startsWith('chmod ')) {
         return 'chmod ' + command.slice(6).trim();
