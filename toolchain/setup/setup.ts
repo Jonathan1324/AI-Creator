@@ -21,6 +21,8 @@ async function installGNUGCC() {
             return;
         }
 
+        console.log("Installing GNU GCC...");
+
         await downloadTool(gnugccUrlWindows, gnugccDestWindows);
   
         await unzipFile(gnugccDestWindows, installDir, false, false);
@@ -33,6 +35,8 @@ async function installGNUGCC() {
         if (gnugccInstalled) {
             return;
         }
+
+        console.log("Installing GNU GCC...");
 
         if(Deno.build.os === "linux") {
             // TEST IT !!!!
@@ -73,6 +77,8 @@ async function installCMake(): Promise<string> {
         if (cmakeExists) {
             return cmakeFile;
         }
+
+        console.log("Installing CMake...");
   
         await downloadTool(cmakeUrlWindows, cmakeDestWindows);
   
@@ -88,6 +94,8 @@ async function installCMake(): Promise<string> {
         if (cmakeExists) {
             return cmakeFile;
         }
+
+        console.log("Installing CMake...");
   
         await downloadTool(Deno.build.os === "linux" ? cmakeUrlLinux : cmakeUrlMac, cmakeDestLinuxMac);
 
@@ -120,6 +128,8 @@ async function installNinja(): Promise<string> {
         if (ninjaExists) {
             return ninjaFile;
         }
+
+        console.log("Installing Ninja...");
   
         await downloadTool(ninjaUrlWindows, ninjaDest);
   
@@ -129,6 +139,9 @@ async function installNinja(): Promise<string> {
         if (ninjaExists) {
             return ninjaFile;
         }
+
+        console.log("Installing Ninja...");
+
         await downloadTool(Deno.build.os === "linux" ? ninjaUrlLinux : ninjaUrlMac, ninjaDest);
   
         await unzipFile(ninjaDest, installDir, false, false);
@@ -140,17 +153,12 @@ async function installNinja(): Promise<string> {
 }
 
 async function downloadFiles() {
-    console.log("Installing Ninja...")
     const ninja: string = await installNinja();
-
     chmod(ninja, "x");
 
-    console.log("Installing CMake...")
     const cmake: string = await installCMake();
-
     chmod(cmake, "x");
 
-    console.log("Installing GNU GCC...")
     await installGNUGCC();
 }
 
