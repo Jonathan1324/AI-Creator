@@ -14,7 +14,7 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "cppStandard": "c++17",
-            "compilerPath": "C:/msys64/mingw64/bin/g++.exe"
+            "compilerPath": "${workspaceFolder}/tools/gnugcc/bin/g++.exe"
         }
     ],
     "version": 4
