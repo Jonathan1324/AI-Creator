@@ -14,7 +14,7 @@ if exist "%DENO_BIN%" (
 
 set PLATFORM=pc-windows-msvc
 
-set DENO_VERSION=v2.2.11
+set DENO_VERSION=v2.2.12
 set DENO_ZIP=deno-x86_64-%PLATFORM%.zip
 set DENO_URL=https://github.com/denoland/deno/releases/download/%DENO_VERSION%/%DENO_ZIP%
 

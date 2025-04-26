@@ -22,7 +22,7 @@ else
     exit 1
 fi
 
-DENO_VERSION="v2.2.11"
+DENO_VERSION="v2.2.12"
 DENO_ZIP="deno-x86_64-$PLATFORM.zip"
 DENO_URL="https://github.com/denoland/deno/releases/download/$DENO_VERSION/$DENO_ZIP"
 

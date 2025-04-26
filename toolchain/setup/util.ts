@@ -77,7 +77,7 @@ export async function fileExists(filePath: string): Promise<boolean> {
     }
 }
 
-export async function _createDir(path: string) {
+export async function createDir(path: string) {
     try {
         await Deno.mkdir(path, { recursive: true });
     } catch (error) {
