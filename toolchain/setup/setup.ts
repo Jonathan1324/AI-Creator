@@ -45,7 +45,7 @@ async function installDocker(): Promise<string> {
     return dockerFile;
 }
 
-async function installGNUGCC() {
+async function installGNUGCC(): Promise<string> {
     const gnugccUrlWindows: string = "https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-12.0.0-ucrt-r3/winlibs-x86_64-posix-seh-gcc-14.2.0-llvm-19.1.7-mingw-w64ucrt-12.0.0-r3.zip";
     const gnugccUrlLinux: string = "https://www.dropbox.com/scl/fi/hph006c1nrok9kkakel2n/gcc-linux.tar.gz?rlkey=0r7xrzgf1sv7mejowinn7mpd8&st=rfznlxq1&dl=0";
     const gnugccUrlMac: string = "https://www.dropbox.com/scl/fi/nbuzxjqclvsvqn21aziqs/gcc-macos.tar.gz?rlkey=64vwqeo5c7gfxbi1r9y5t6hhe&st=f6ybu0qi&dl=0";
@@ -58,10 +58,12 @@ async function installGNUGCC() {
 
     Deno.mkdir(installDir, { recursive: true });
 
+    const file = "./tools/gnugcc/installed.txt";
+
     if (Deno.build.os === "windows") {
-        const gnugccInstalled = await fileExists("./tools/gnugcc/installed.txt");
+        const gnugccInstalled = await fileExists(file);
         if (gnugccInstalled) {
-            return;
+            return file;
         }
 
         console.log("Installing GNU GCC...");
@@ -74,9 +76,9 @@ async function installGNUGCC() {
 
         deleteFile(gnugccDestWindows);
     } else {
-        const gnugccInstalled = await fileExists("./tools/gnugcc/installed.txt");
+        const gnugccInstalled = await fileExists(file);
         if (gnugccInstalled) {
-            return;
+            return file;
         }
 
         console.log("Installing GNU GCC...");
@@ -96,7 +98,9 @@ async function installGNUGCC() {
         }
     }
 
-    Deno.writeTextFile("./tools/gnugcc/installed.txt", ".");
+    Deno.writeTextFile(file, ".");
+
+    return file;
 }
 
 async function installCMake(): Promise<string> {
