@@ -7,6 +7,12 @@ void initializeData(Data* data) {
     std::shared_ptr<Metadata> metadata = std::make_shared<Metadata>();
     data->metadata = metadata;
 
+    strcpy(metadata->name, "");
+    metadata->type = 0;
+
+    metadata->input_count = 0;
+    metadata->output_count = 0;
+
     std::shared_ptr<AIData> aidata = std::make_shared<AIData>();
 
     aidata->ruleset = nullptr;
