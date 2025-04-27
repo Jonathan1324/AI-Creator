@@ -1,7 +1,7 @@
 #include "save.hpp"
 #include <iostream>
 
-void saveData(Data* data, const char* filename) {
+int saveData(Data* data, const char* filename) {
     DataSave dataSave;
 
     initialize_dataSave(&dataSave, data->metadata->input_count, data->metadata->output_count, data->aidata->ruleset->rule_count);
@@ -10,12 +10,16 @@ void saveData(Data* data, const char* filename) {
 
     convertAIDataToAIDataSave(&dataSave, data);
 
-    writeFile(filename, &dataSave);
+    if(writeFile(filename, &dataSave)) {
+        return 1;
+    }
 
     destroy_dataSave(&dataSave);
+
+    return 0;
 }
 
-void loadData(Data* data, const char* filename) {
+int loadData(Data* data, const char* filename) {
     DataSave dataSave;
 
     MetadataSave* metadata = (MetadataSave*)malloc(sizeof(MetadataSave));
@@ -27,11 +31,17 @@ void loadData(Data* data, const char* filename) {
     RuleSetSave* ruleset = (RuleSetSave*)malloc(sizeof(RuleSetSave));
     aidata->ruleset = ruleset;
 
-    readFile(filename, &dataSave);
+    int status = readFile(filename, &dataSave);
+
+    if(status != 0) {
+        return status;
+    }
 
     convertMetadataSaveToMetadata(&dataSave, data);
 
     convertAIDataSaveToAIData(&dataSave, data);
 
     destroy_dataSave(&dataSave);
+
+    return 0;
 }

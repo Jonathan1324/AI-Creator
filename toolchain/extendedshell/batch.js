@@ -49,5 +49,14 @@ export function transpileToBatch(cmd, outputDir) {
     if (command.startsWith('runLinux ')) {
         return "";
     }
+    if (command.startsWith('runBatch ')) {
+        return "@" + command.slice(9).trim();
+    }
+    if (command.startsWith('runShell ')) {
+        return "";
+    }
+    if (command.startsWith('getPath ')) {
+        return "set " + command.slice(8) + "=\"%cd%\"";
+    }
     throw new Error("Unsupported command: " + command);
 }

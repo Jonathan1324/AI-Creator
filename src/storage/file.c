@@ -125,20 +125,17 @@ int readAIData(FILE* file, AIDataSave* aidata, uint8_t type) {
 int readFile(const char* filename, DataSave* data) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
-        perror("Error opening file for reading.\n");
         return 1;
     }
 
     if (!read_metadata(file, data->metadata)) {
-        perror("Error reading metadata.\n");
         fclose(file);
-        return 1;
+        return 2;
     }
 
     if (!readAIData(file, data->aidata, data->metadata->type)) {
-        perror("Error reading aidata.\n");
         fclose(file);
-        return 1;
+        return 3;
     }
 
     fclose(file);

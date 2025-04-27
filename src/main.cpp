@@ -23,37 +23,87 @@ int getOperatingSystem() {
     #endif
 }
 
+int clear() {
+    const int os = getOperatingSystem();
+
+    switch(os) {
+        case Windows:
+            system("cls");
+            return 1;
+        case macOS:
+        case Linux:
+            system("clear");
+            return 1;
+        case Unknown:
+            system("clear");
+            return -1;
+    }
+
+    return -1;
+}
+
 int main() {
     Data* ai = nullptr;
 
+    std::string msg = "";
+    std::string aecs = "";
+
+    clear();
+
     while(true) {
+        if(msg != "") {
+            std::cout << aecs << msg << "\033[0m" << std::endl;
+        }
+        msg = "";
+        aecs = "";
+
         std::cout << "What do you want to do? ";
-        if(ai) {
+        if(ai && ai->metadata) {
             std::cout << "Current AI: " << ai->metadata->name << std::endl;
         } else {
             std::cout << "No AI loaded currently." << std::endl;
         }
-        std::cout << "1. load\n2. save\n3. create\n4. run\n5. quit" << std::endl;
+        std::cout << "1. load\n2. save\n3. " << (ai == nullptr ? "create" : "change") << "\n4. run\n5. quit" << std::endl;
 
         std::string action;
 
-        std::cin >> action;
+        std::getline(std::cin, action);
 
         if (action == "1") {
+            std::string file;
+            
+            std::getline(std::cin, file);
 
+            const int status = loadData(ai, file.c_str());
+
+            switch (status) {
+                case 1:
+                    aecs = "\033[31m";
+                    msg = "Error opening file for reading.";
+                    break;
+                case 2:
+                    aecs = "\033[31m";
+                    msg = "Error reading metadata from file.";
+                    break;
+                case 3:
+                    aecs = "\033[31m";
+                    msg = "Error reading aidata from file.";
+                    break;
+            }
         } else if (action == "2") {
 
         } else if (action == "3") {
-
+            initializeData(ai);
         } else if (action == "4") {
 
         } else if (action == "5") {
             break;
         } else {
-            std::cout << "unknown action" << std::endl;
+            aecs = "\033[31m";
+            msg = "unknown action";
         }
 
-        std::cout << getOperatingSystem() << std::endl;
+        clear();
     }
     /*
     Data data;

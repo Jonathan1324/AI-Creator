@@ -38,5 +38,14 @@ export function transpileToShell(cmd, outputDir) {
     if (command.startsWith('runLinux ')) {
         return "if [ \"$(uname)\" = \"Linux\" ]; then\n    " + command.slice(9).trim() + "\nfi";
     }
+    if (command.startsWith('runShell ')) {
+        return command.slice(9).trim();
+    }
+    if (command.startsWith('runBatch ')) {
+        return "";
+    }
+    if (command.startsWith('getPath ')) {
+        return command.slice(8) + "=$(pwd)";
+    }
     throw new Error("Unsupported command: " + command);
 }
