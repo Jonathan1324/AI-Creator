@@ -93,7 +93,7 @@ int main() {
         } else if (action == "2") {
 
         } else if (action == "3") {
-            initializeData(ai);
+            
         } else if (action == "4") {
 
         } else if (action == "5") {
