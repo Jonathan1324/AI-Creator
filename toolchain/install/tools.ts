@@ -1,4 +1,5 @@
-import { downloadTool, unzipFile, fileExists, deleteFile, chmod } from "./util.ts"
+import { unzipFile, fileExists, deleteFile, chmod } from "./files.ts"
+import { downloadTool } from "./download.ts"
 
 async function installDocker(): Promise<string> {
     const version: string = "28.1.1";

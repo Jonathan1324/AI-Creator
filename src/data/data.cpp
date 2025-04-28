@@ -4,6 +4,8 @@
 #include <iostream>
 
 void initializeData(Data* data) {
+    data->exists = true;
+
     std::shared_ptr<Metadata> metadata = std::make_shared<Metadata>();
     data->metadata = metadata;
 

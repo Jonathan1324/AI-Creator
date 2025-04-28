@@ -146,7 +146,6 @@ int readFile(const char* filename, DataSave* data) {
 int writeFile(const char* filename, DataSave* data) {
     FILE* file = fopen(filename, "wb");
     if (!file) {
-        perror("Error opening file for writing.\n");
         return 1;
     }
 

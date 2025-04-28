@@ -1,13 +1,13 @@
-import { setup } from "./setup/setup.ts"
+import { install } from "./install/main.ts"
 import { transpileXsh } from "./extendedshell/main.ts"
 
-import { deleteFolderRecursive } from "./files/folder.js"
+import { deleteFolderRecursive } from "./utils/folder.js"
 
 async function main() {
-    await setup();
+    await install();
 
-    await deleteFolderRecursive("build_scripts");
-    await transpileXsh("./scripts/", "build_scripts");
+    await deleteFolderRecursive("build/build_scripts");
+    await transpileXsh("./toolchain/scripts/", "build/build_scripts");
 }
 
 await main();

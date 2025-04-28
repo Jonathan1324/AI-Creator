@@ -43,7 +43,8 @@ int clear() {
 }
 
 int main() {
-    Data* ai = nullptr;
+    Data ai;
+    ai.exists = false;
 
     std::string msg = "";
     std::string aecs = "";
@@ -58,23 +59,27 @@ int main() {
         aecs = "";
 
         std::cout << "What do you want to do? ";
-        if(ai && ai->metadata) {
-            std::cout << "Current AI: " << ai->metadata->name << std::endl;
+        if(ai.exists) {
+            std::cout << "Current AI: " << ai.metadata->name << std::endl;
         } else {
             std::cout << "No AI loaded currently." << std::endl;
         }
-        std::cout << "1. load\n2. save\n3. " << (ai == nullptr ? "create" : "change") << "\n4. run\n5. quit" << std::endl;
+        std::cout << "1. load\n2. save\n3. " << (ai.exists ? "change" : "create") << "\n4. run\n5. quit" << std::endl;
 
         std::string action;
 
         std::getline(std::cin, action);
 
         if (action == "1") {
+            clear();
+
             std::string file;
             
+            std::cout << "\033[1;32m" << "Load from file" << "\033[0m" << std::endl;
+            std::cout << "What's the name of the file? " << std::endl;
             std::getline(std::cin, file);
 
-            const int status = loadData(ai, file.c_str());
+            const int status = loadData(&ai, file.c_str());
 
             switch (status) {
                 case 1:
@@ -91,9 +96,43 @@ int main() {
                     break;
             }
         } else if (action == "2") {
+            clear();
 
+            std::string file;
+
+            std::cout << "\033[1;32m" << "Save to file" << "\033[0m" << std::endl;
+            std::cout << "What's the name of the file? " << std::endl;
+            std::getline(std::cin, file);
+
+            const int status = saveData(&ai, file.c_str());
+
+            switch (status) {
+                case 1:
+                aecs = "\033[31m";
+                msg = "Couldn't save to file";
+                    break;
+            }
         } else if (action == "3") {
-            
+            clear();
+
+            initializeData(&ai);
+            ai.metadata->type = 0;
+
+            ai.aidata->ruleset->rule_count = 0;
+
+            std::string name;
+
+            std::cout << "What should it be called (max. 255 letters)? " << std::endl;
+            std::getline(std::cin, name);
+
+            if(name.length() > 255) {
+                ai.exists = false;
+                aecs = "\033[31m";
+                msg = "name is too long.";
+            } else {
+                std::strcpy(ai.metadata->name, name.c_str());
+                ai.exists = true;
+            }
         } else if (action == "4") {
 
         } else if (action == "5") {

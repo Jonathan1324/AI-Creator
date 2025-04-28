@@ -12,6 +12,7 @@ extern "C" {
 struct Data {
     std::shared_ptr<Metadata> metadata;
     std::shared_ptr<AIData> aidata;
+    bool exists;
 };
 
 void initializeData(Data* data);
