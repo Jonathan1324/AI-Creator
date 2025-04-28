@@ -26,7 +26,7 @@ set(RELEASE_DIR "bin/release")
 
 set(RELEASE_CFLAGS "-Wall -O2 -Iinclude")
 
-set(RELEASE_LDFLAGS "-s")
+set(RELEASE_LDFLAGS "-static")
 
 
 file(GLOB_RECURSE CPP_SRCS "src/*.cpp")

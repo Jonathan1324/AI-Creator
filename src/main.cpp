@@ -3,68 +3,34 @@
 #include <cstring>
 
 #include "save.hpp"
-
-enum OperatingSystem {
-    Windows = 1,
-    macOS = 2,
-    Linux = 3,
-    Unknown = -1
-};
-
-int getOperatingSystem() {
-    #ifdef _WIN32
-        return Windows;
-    #elif defined(__APPLE__)
-        return macOS;
-    #elif defined(__linux__)
-        return Linux;
-    #else
-        return Unknown;
-    #endif
-}
-
-int clear() {
-    const int os = getOperatingSystem();
-
-    switch(os) {
-        case Windows:
-            system("cls");
-            return 1;
-        case macOS:
-        case Linux:
-            system("clear");
-            return 1;
-        case Unknown:
-            system("clear");
-            return -1;
-    }
-
-    return -1;
-}
+#include "cli/cli.hpp"
 
 int main() {
     Data ai;
     ai.exists = false;
 
     std::string msg = "";
-    std::string aecs = "";
+    std::vector<AEC> aecs;
 
     clear();
 
     while(true) {
         if(msg != "") {
-            std::cout << aecs << msg << "\033[0m" << std::endl;
+            printText(msg, aecs);
         }
         msg = "";
-        aecs = "";
+        aecs.clear();
 
-        std::cout << "What do you want to do? ";
         if(ai.exists) {
-            std::cout << "Current AI: " << ai.metadata->name << std::endl;
+            printText(std::string("What do you want to do? ") + "Current AI: " + ai.metadata->name);
         } else {
-            std::cout << "No AI loaded currently." << std::endl;
+            printText("What do you want to do? No AI loaded currently.");
         }
-        std::cout << "1. load\n2. save\n3. " << (ai.exists ? "change" : "create") << "\n4. run\n5. quit" << std::endl;
+        printText("1. load");
+        printText("2. save");
+        printText(ai.exists ? "3. change" : "3. create");
+        printText("4. run");
+        printText("5. quit");
 
         std::string action;
 
@@ -75,42 +41,47 @@ int main() {
 
             std::string file;
             
-            std::cout << "\033[1;32m" << "Load from file" << "\033[0m" << std::endl;
-            std::cout << "What's the name of the file? " << std::endl;
+            printText("Load from file", {green});
+            printText("What's the name of the file? ");
             std::getline(std::cin, file);
 
             const int status = loadData(&ai, file.c_str());
 
             switch (status) {
                 case 1:
-                    aecs = "\033[31m";
+                    aecs.push_back(red);
                     msg = "Error opening file for reading.";
                     break;
                 case 2:
-                    aecs = "\033[31m";
+                    aecs.push_back(red);
                     msg = "Error reading metadata from file.";
                     break;
                 case 3:
-                    aecs = "\033[31m";
+                    aecs.push_back(red);
                     msg = "Error reading aidata from file.";
                     break;
             }
         } else if (action == "2") {
             clear();
 
-            std::string file;
+            if(!ai.exists) {
+                aecs.push_back(red);
+                msg = "No ai loaded.";
+            } else {
+                std::string file;
 
-            std::cout << "\033[1;32m" << "Save to file" << "\033[0m" << std::endl;
-            std::cout << "What's the name of the file? " << std::endl;
-            std::getline(std::cin, file);
+                printText("Save to file", {green});
+                printText("What's the name of the file? ");
+                std::getline(std::cin, file);
 
-            const int status = saveData(&ai, file.c_str());
+                const int status = saveData(&ai, file.c_str());
 
-            switch (status) {
-                case 1:
-                aecs = "\033[31m";
-                msg = "Couldn't save to file";
-                    break;
+                switch (status) {
+                    case 1:
+                        aecs.push_back(red);
+                        msg = "Couldn't save to file";
+                        break;
+                }
             }
         } else if (action == "3") {
             clear();
@@ -122,12 +93,12 @@ int main() {
 
             std::string name;
 
-            std::cout << "What should it be called (max. 255 letters)? " << std::endl;
+            printText("What should it be called (max. 255 letters)? ");
             std::getline(std::cin, name);
 
             if(name.length() > 255) {
                 ai.exists = false;
-                aecs = "\033[31m";
+                aecs.push_back(red);
                 msg = "name is too long.";
             } else {
                 std::strcpy(ai.metadata->name, name.c_str());
@@ -138,7 +109,7 @@ int main() {
         } else if (action == "5") {
             break;
         } else {
-            aecs = "\033[31m";
+            aecs.push_back(red);
             msg = "unknown action";
         }
 

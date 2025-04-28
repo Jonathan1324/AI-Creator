@@ -106,7 +106,9 @@
         "text_encoding": "cpp",
         "thread": "cpp",
         "typeindex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "os.h": "c",
+        "unistd.h": "c"
     },
     "deno.enable": true
 }
