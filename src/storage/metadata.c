@@ -5,6 +5,9 @@
 int initialize_metadata(MetadataSave* meta, uint16_t input_count, uint16_t output_count) {
     if (!meta) return 0;
 
+    strcpy(meta->magic, "AI C");
+    meta->version = 1;
+
     memset(meta->name, 0, 255); // Initialize name to empty
     meta->type = 0;
     meta->input_count = input_count;

@@ -11,6 +11,8 @@ typedef struct {
 } IOEntrySave;
 
 typedef struct {
+    char magic[4];
+    uint16_t version;
     char name[255];         // 255 bytes for the name
     uint8_t type;           // 1 byte for the type
 
