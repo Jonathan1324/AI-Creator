@@ -6,8 +6,7 @@
 #include "cli/cli.hpp"
 
 int main() {
-    Data ai;
-    ai.exists = false;
+    Data* ai = nullptr;
 
     std::string msg = "";
     std::vector<AEC> aecs;
@@ -21,14 +20,14 @@ int main() {
         msg = "";
         aecs.clear();
 
-        if(ai.exists) {
-            printText(std::string("What do you want to do? ") + "Current AI: " + ai.metadata->name);
+        if(ai) {
+            printText(std::string("What do you want to do? ") + "Current AI: " + ai->metadata->name);
         } else {
             printText("What do you want to do? No AI loaded currently.");
         }
         printText("1. load");
         printText("2. save");
-        printText(ai.exists ? "3. change" : "3. create");
+        printText(ai ? "3. change" : "3. create");
         printText("4. run");
         printText("5. quit");
 
@@ -37,7 +36,11 @@ int main() {
         std::getline(std::cin, action);
 
         if (action == "1") {
+            /*
             clear();
+
+            ai = new Data();
+            initializeData(ai);
 
             std::string file;
             
@@ -45,7 +48,7 @@ int main() {
             printText("What's the name of the file? ");
             std::getline(std::cin, file);
 
-            const int status = loadData(&ai, file.c_str());
+            const int status = loadData(ai, file.c_str());
 
             switch (status) {
                 case 1:
@@ -61,10 +64,11 @@ int main() {
                     msg = "Error reading aidata from file.";
                     break;
             }
+            */
         } else if (action == "2") {
             clear();
 
-            if(!ai.exists) {
+            if(!ai) {
                 aecs.push_back(red);
                 msg = "No ai loaded.";
             } else {
@@ -74,22 +78,23 @@ int main() {
                 printText("What's the name of the file? ");
                 std::getline(std::cin, file);
 
-                const int status = saveData(&ai, file.c_str());
+                const int status = saveData(ai, file.c_str());
 
                 switch (status) {
                     case 1:
                         aecs.push_back(red);
-                        msg = "Couldn't save to file";
+                        msg = "Error saving to file";
                         break;
                 }
             }
         } else if (action == "3") {
             clear();
 
-            initializeData(&ai);
-            ai.metadata->type = 0;
+            ai = new Data();
+            initializeData(ai);
+            ai->metadata->type = 0;
 
-            ai.aidata->ruleset->rule_count = 0;
+            ai->aidata->ruleset->rule_count = 0;
 
             std::string name;
 
@@ -97,12 +102,12 @@ int main() {
             std::getline(std::cin, name);
 
             if(name.length() > 255) {
-                ai.exists = false;
+                delete ai;
+                ai = nullptr;
                 aecs.push_back(red);
                 msg = "name is too long.";
             } else {
-                std::strcpy(ai.metadata->name, name.c_str());
-                ai.exists = true;
+                std::strcpy(ai->metadata->name, name.c_str());
             }
         } else if (action == "4") {
 
@@ -114,6 +119,9 @@ int main() {
         }
 
         clear();
+    }
+    if (ai) {
+        delete ai;
     }
     /*
     Data data;

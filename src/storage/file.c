@@ -92,7 +92,7 @@ void read_ruleset(FILE* file, RuleSetSave *ruleset) {
     read = fread(ruleset->rules, sizeof(RuleSave), ruleset->rule_count, file);
     if (read != ruleset->rule_count) {
         perror("Error reading rules from file");
-        free(ruleset->rules); // Speicher freigeben bei Fehler
+        free(ruleset->rules);
         return;
     }
 

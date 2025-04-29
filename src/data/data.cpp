@@ -19,8 +19,8 @@ void initializeData(Data* data) {
 
     aidata->ruleset = nullptr;
 
-    switch (data->metadata->type) {
-        case 0:
+    switch (metadata->type) {
+        case RULE_BASED:
             aidata->ruleset = std::make_shared<RuleSet>();
             break;
         default:

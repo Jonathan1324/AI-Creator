@@ -24,9 +24,11 @@ int loadData(Data* data, const char* filename) {
 
     MetadataSave* metadata = (MetadataSave*)malloc(sizeof(MetadataSave));
     dataSave.metadata = metadata;
+    memset(metadata, 0, sizeof(MetadataSave));
 
     AIDataSave* aidata = (AIDataSave*)malloc(sizeof(AIDataSave));
     dataSave.aidata = aidata;
+    memset(aidata, 0, sizeof(AIDataSave));
 
     RuleSetSave* ruleset = (RuleSetSave*)malloc(sizeof(RuleSetSave));
     aidata->ruleset = ruleset;

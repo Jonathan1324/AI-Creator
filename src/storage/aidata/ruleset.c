@@ -1,6 +1,7 @@
 #include "ruleset.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 void initialize_ruleset(RuleSetSave* ruleset, int num_rules) {
     if (!ruleset || num_rules <= 0) {
